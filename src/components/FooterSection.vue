@@ -13,10 +13,9 @@ const resourceLinks = [
 ]
 
 const socialLinks = [
-  { icon: 'fa-brands fa-facebook-f', href: '#' },
-  { icon: 'fa-brands fa-instagram', href: '#' },
-  { icon: 'fa-brands fa-youtube', href: '#' },
-  { icon: 'fa-brands fa-linkedin-in', href: '#' },
+  { icon: 'fa-brands fa-facebook-f', href: 'https://facebook.com/opusdentallab' },
+  { icon: 'fa-brands fa-instagram', href: 'https://instagram.com/opusdentallab' },
+  { icon: 'fa-brands fa-tiktok', href: 'https://tiktok.com/@opusdentallab' },
 ]
 </script>
 
@@ -59,6 +58,9 @@ const socialLinks = [
 
       <div class="footer__bottom">
         <p>OPUS DENTAL LAB LLC — ALL RIGHTS RESERVED — © {{ new Date().getFullYear() }}</p>
+        <p class="footer__dev">
+          Developed by <a href="https://yeyo.dev/" target="_blank">yeyo.dev</a>
+        </p>
       </div>
     </div>
   </footer>
@@ -208,6 +210,25 @@ const socialLinks = [
       font-size: 0.75rem;
       color: $text-muted;
       letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer__dev {
+      font-size: 0.7rem;
+      color: rgba($text-muted, 0.6);
+      letter-spacing: 0.05em;
+
+      a {
+        display: inline;
+        color: rgba($text-light, 0.4);
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.3s;
+
+        &:hover {
+          color: $primary;
+        }
+      }
     }
   }
 }
