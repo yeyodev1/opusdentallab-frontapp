@@ -1,28 +1,62 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
 const features = [
-  { icon: 'fa-solid fa-bolt', text: 'Fast Turnaround Time' },
-  { icon: 'fa-solid fa-scanner-touchscreen', text: 'We Accept All Digital Scans' },
-  { icon: 'fa-solid fa-truck-fast', text: 'Nationwide Shipping' },
+  'Fast Turnaround Time',
+  'We Accept All Digital Scans',
+  'Nationwide Shipping',
 ]
+
+const videoRef = ref<HTMLVideoElement | null>(null)
+
+onMounted(() => {
+  if (videoRef.value) {
+    videoRef.value.play().catch(() => {
+      // Autoplay might be blocked, handled by muted attribute
+    })
+  }
+})
 </script>
 
 <template>
   <section class="hero">
-    <div class="hero__overlay"></div>
-
-    <div class="hero__content">
-      <p class="hero__subtitle">FASTEST GROWING</p>
-      <h1 class="hero__title">OPUS DENTAL<br />LAB LLC</h1>
+    <!-- Background Video -->
+    <div class="hero__video-container">
+      <video
+        ref="videoRef"
+        class="hero__video"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="https://res.cloudinary.com/dpimsaaa4/image/upload/v1771786054/cloudinary_all_on_x_image_1771786054682.png"
+      >
+        <source src="https://framerusercontent.com/assets/5PDfWiHUESEfLeLeaYjPJ5IPOBE.mp4" type="video/mp4" />
+      </video>
+      <div class="hero__video-overlay"></div>
     </div>
 
-    <div class="hero__sidebar">
-      <div v-for="feat in features" :key="feat.text" class="hero__feature">
-        <i :class="feat.icon"></i>
-        <span>{{ feat.text }}</span>
+    <!-- UI Overlay: Top Right Features -->
+    <div class="hero__features">
+      <div v-for="feat in features" :key="feat" class="hero__feature">
+        {{ feat }}
       </div>
+    </div>
 
+    <!-- UI Overlay: Bottom Left Title -->
+    <div class="hero__content">
+      <p class="hero__subtitle">FASTEST GROWING</p>
+      <h1 class="hero__title">
+        OPUS DENTAL<br />
+        LAB LLC
+      </h1>
+    </div>
+
+    <!-- UI Overlay: Bottom Right CTA -->
+    <div class="hero__cta-wrapper">
       <a href="#contact" class="hero__cta">
-        First Case Credit <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        First Case Credit 
+        <span class="hero__cta-icon">↗</span>
       </a>
     </div>
   </section>
@@ -31,93 +65,153 @@ const features = [
 <style lang="scss" scoped>
 .hero {
   position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 8rem 3rem 4rem;
-  background: linear-gradient(135deg, $primary-dark 0%, $surface-dark 40%, $primary-dark 100%);
+  width: 100%;
+  height: 100vh;
+  background: #000;
   overflow: hidden;
+  color: $white;
 
-  &__overlay {
+  // ─── Background Video ───
+  &__video-container {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 60% 50%, rgba($primary, 0.08) 0%, transparent 60%);
-    pointer-events: none;
+    z-index: 1;
   }
 
-  &__content {
-    position: relative;
-    z-index: 2;
+  &__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7) contrast(1.1);
   }
 
-  &__subtitle {
-    font-size: clamp(1.2rem, 3vw, 2rem);
-    font-weight: 400;
-    color: $text-secondary;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
+  &__video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.5) 0%,
+        transparent 20%,
+        transparent 80%,
+        rgba(0, 0, 0, 0.6) 100%);
   }
 
-  &__title {
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    color: $text-light;
-  }
-
-  &__sidebar {
-    position: relative;
+  // ─── Feature List (Top Right) ───
+  &__features {
+    position: absolute;
+    top: 8rem;
+    right: 3rem;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.75rem;
+    gap: 0.5rem;
+    text-align: right;
+
+    @media (max-width: 768px) {
+      top: 6rem;
+      right: 1.5rem;
+    }
   }
 
   &__feature {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
     font-size: 0.9rem;
-    color: $text-secondary;
+    font-weight: 400;
+    color: rgba($white, 0.85);
+    letter-spacing: 0.02em;
+  }
 
-    i {
-      color: $primary;
-      font-size: 0.8rem;
+  // ─── Title Content (Bottom Left) ───
+  &__content {
+    position: absolute;
+    bottom: 4rem;
+    left: 3rem;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+      bottom: 3rem;
+      left: 1.5rem;
+    }
+  }
+
+  &__subtitle {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: rgba($white, 0.6);
+    margin-bottom: 0.25rem;
+  }
+
+  &__title {
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  // ─── CTA Wrapper (Bottom Right) ───
+  &__cta-wrapper {
+    position: absolute;
+    bottom: 4rem;
+    right: 3rem;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+      position: relative;
+      bottom: auto;
+      right: auto;
+      margin-top: 2rem;
+      padding-left: 1.5rem;
     }
   }
 
   &__cta {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-top: 2rem;
-    padding: 0.85rem 2rem;
-    border: 1px solid rgba($white, 0.25);
+    gap: 0.75rem;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 99px;
     font-size: 0.9rem;
     font-weight: 500;
-    color: $text-light;
-    transition: background 0.3s, border-color 0.3s;
+    color: $white;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
 
     &:hover {
-      background: rgba($primary, 0.15);
-      border-color: $primary;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
     }
+  }
+
+  &__cta-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+    margin-bottom: 2px;
   }
 }
 
 @media (max-width: 768px) {
   .hero {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 3rem;
-    padding: 7rem 1.5rem 3rem;
+    justify-content: flex-end;
+    padding-bottom: 3rem;
 
-    &__sidebar {
-      align-items: flex-start;
+    &__content {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      padding: 0 1.5rem;
+    }
+
+    &__cta-wrapper {
+      position: relative;
+      bottom: auto;
+      right: auto;
+      padding: 0 1.5rem;
+      margin-top: 1.5rem;
     }
   }
 }
