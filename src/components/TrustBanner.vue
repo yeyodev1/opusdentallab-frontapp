@@ -32,7 +32,7 @@ const trustItems = [
     display: flex;
     gap: 4rem;
     white-space: nowrap;
-    animation: scroll 25s linear infinite;
+    animation: scroll 40s linear infinite alternate; // 'alternate' creates the ping-pong effect. Slowed down slightly for elegance.
     width: max-content;
   }
 
