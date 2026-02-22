@@ -10,34 +10,16 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    quote: "OPUS DENTAL LAB technicians are true artists. The ceramic work is some of the best I've seen, and our patients are always thrilled with the results.",
-    name: 'Dr. Kevin Patel',
-    practice: 'Gentle Touch Dentistry',
-    image: 'https://framerusercontent.com/images/DBtvVa7EC37qZi0ruQ9ylr1XDGQ.jpg?width=800'
+    quote: "This is our favorite lab. It is clear that they love their work, and our patients couldn't be happier with the results. Their commitment to excellence is evident in every case.",
+    name: 'Fatima Butt',
+    practice: 'Z FAMILY AND COSMETIC DENTISTRY',
+    image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771804384/WhatsApp_Image_Feb_22_2026_ghbxoh.jpg'
   },
   {
-    quote: "I've been using OPUS DENTAL LAB for the past two and a half years, and their products are consistently excellent. My crowns fit like a glove and look lifelike.",
-    name: 'Jilbert Neman',
-    practice: 'DDS',
-    image: 'https://framerusercontent.com/images/yHa9GTpt5BgH0oW3aHODd5V9U38.jpg?width=800'
-  },
-  {
-    quote: "A very reliable dental lab with great quality products and the best lab technicians—especially Danny and Sam! They’re always available to answer any questions",
-    name: 'Dr. Mike Torres',
-    practice: 'Parkside Dental',
-    image: 'https://framerusercontent.com/images/RiukRfppKWATQjdvnvRv1Rm48.jpg?width=800'
-  },
-  {
-    quote: "The service is amazing! This is the lab to go to! Desire, Zoraida, Ignacio, and the rest of the team at OPUS are incredible. They work with you to get things right the first time.",
-    name: 'Sara Roberts',
-    practice: 'Smile Design Studio',
-    image: 'https://framerusercontent.com/images/5aBwvZGRsNmJrpoKgi8OSBx5Y.jpg?width=800'
-  },
-  {
-    quote: "OPUS DENTAL LAB always goes above and beyond for our patients. I've been extremely happy with their service and have referred several colleagues to them.",
-    name: 'Nichole Lamb',
-    practice: 'Brightview Family Dental',
-    image: 'https://framerusercontent.com/images/ammvSW0WNMC59QWGR8X3CUwZ4k.jpg?width=800'
+    quote: "This is our laboratory of choice. Their exceptional craftsmanship and passion for their work translate into superior clinical outcomes that both our team and our patients truly appreciate.",
+    name: 'Dr. Saad',
+    practice: 'Z FAMILY AND COSMETIC DENTISTRY',
+    image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771804394/WhatsApp_Image_yarmxw.jpg'
   }
 ]
 
