@@ -1,0 +1,70 @@
+
+> opus-dental-lab-frontapp@1.0.0 build /Users/diegoreyes/projects/work/personal/opus-dental-lab-frontapp
+> vue-tsc -b && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use meta.type-of instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+8 │   @if type-of($value) == 'number' and unit($value) == '%' {
+  │       ^^^^^^^^^^^^^^^
+  ╵
+    src/styles/index.scss 8:7                 -to-percent()
+    src/styles/index.scss 23:9                darken()
+    src/components/ContactSection.vue 133:75  root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use math.unit instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+8 │   @if type-of($value) == 'number' and unit($value) == '%' {
+  │                                       ^^^^^^^^^^^^
+  ╵
+    src/styles/index.scss 8:39                -to-percent()
+    src/styles/index.scss 23:9                darken()
+    src/components/ContactSection.vue 133:75  root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use meta.type-of instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+8 │   @if type-of($value) == 'number' and unit($value) == '%' {
+  │       ^^^^^^^^^^^^^^^
+  ╵
+    src/styles/index.scss 8:7               -to-percent()
+    src/styles/index.scss 15:9              lighten()
+    src/components/FeaturesGrid.vue 213:50  root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use math.unit instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+8 │   @if type-of($value) == 'number' and unit($value) == '%' {
+  │                                       ^^^^^^^^^^^^
+  ╵
+    src/styles/index.scss 8:39              -to-percent()
+    src/styles/index.scss 15:9              lighten()
+    src/components/FeaturesGrid.vue 213:50  root stylesheet
+
+✓ 78 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                     0.82 kB │ gzip:  0.49 kB
+dist/assets/HomeView-Bdw3cwBk.css                   0.64 kB │ gzip:  0.36 kB
+dist/assets/index-BVvxJoVf.css                      1.18 kB │ gzip:  0.65 kB
+dist/assets/OpusDentalLabView-wUN6Ob7Y.css         38.59 kB │ gzip:  6.68 kB
+dist/assets/_plugin-vue_export-helper-DlAUqK2U.js   0.09 kB │ gzip:  0.10 kB
+dist/assets/HomeView-DFJ0Y7OK.js                    0.40 kB │ gzip:  0.31 kB
+dist/assets/OpusDentalLabView-CNLagscs.js          33.05 kB │ gzip: 10.58 kB
+dist/assets/index-D84YaP11.js                      99.04 kB │ gzip: 38.73 kB
+✓ built in 1.00s
