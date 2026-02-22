@@ -1,46 +1,70 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import ContactSection from '@/components/ContactSection.vue'
 import FooterSection from '@/components/FooterSection.vue'
+import StoryblokService from '@/services/storyblok.service'
 
-// Reusing the rich product data from the gallery
-const products = [
-  // Removables
-  { name: 'Flexi Partial', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771786901/Flexi_Partial_kcb1o7.png', category: 'Removables' },
-  { name: 'Acrylic Partials', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771786901/Acrylic_Partials_wqlg5x.png', category: 'Removables' },
-  { name: 'Full Denture', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771786902/Full_Denture_trhwob.png', category: 'Removables' },
-  // Appliances
-  { name: 'Nance Appliance', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787007/Nance_Appliance_tujfjk.png', category: 'Appliances' },
-  { name: 'Sport Guard', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787007/Sport_Guard_vreplk.png', category: 'Appliances' },
-  { name: 'Soft Inside Hard Outside', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787007/Soft_inside_Hard_Outside_mvunn7.png', category: 'Appliances' },
-  { name: 'Haas Expander', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787008/Haas_Expander_li1qzb.png', category: 'Appliances' },
-  { name: 'Cetlin Acco', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787008/Cetlin_Acco_tm3ojs.png', category: 'Appliances' },
-  { name: 'Schwartz Expander', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787008/Schwartz_Expander_dhjugh.png', category: 'Appliances' },
-  { name: 'Space Regaining', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787009/Space_Regaining_rwx4d0.png', category: 'Appliances' },
-  { name: 'Spring Aligner', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787008/Spring_Aligner_rvq5ex.png', category: 'Appliances' },
-  { name: 'NTI Appliance', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787007/NTI_Appliance_ynloz8.png', category: 'Appliances' },
-  { name: 'Thumb Habit', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787009/Thumb_Habit_xvxiu0.png', category: 'Appliances' },
-  { name: 'SnoreX', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787013/SnoreX_b74j9p.png', category: 'Appliances' },
-  { name: 'Frankel', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787013/Frankel_f3yphl.png', category: 'Appliances' },
-  { name: 'Palatal Expander', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787017/Palatal_Expander_gff81q.png', category: 'Appliances' },
-  { name: 'Lip Bumper', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787017/Lip_Bumper_mjsdep.png', category: 'Appliances' },
-  // Retainers
-  { name: 'Hawley Retainers', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787008/Hawley_Retainers_vpldgg.png', category: 'Retainers' },
-  { name: 'Essix Retainers', image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771787007/Essix_Retainers_lcc4a9.png', category: 'Retainers' },
-]
+interface MappedProduct {
+  name: string;
+  image: string;
+  category: string;
+  slug: string;
+}
 
-const categories = ['All', 'Removables', 'Appliances', 'Retainers']
+const products = ref<MappedProduct[]>([])
+const loading = ref(true)
 const activeCategory = ref('All')
 const selectedImage = ref<string | null>(null)
+const route = useRoute()
+
+const dynamicCategories = computed(() => {
+  const cats = new Set(products.value.map(p => p.category))
+  return Array.from(cats).sort()
+})
 
 const filteredProducts = computed(() => {
-  if (activeCategory.value === 'All') return products
-  return products.filter(p => p.category === activeCategory.value)
+  if (activeCategory.value === 'All') return products.value
+  return products.value.filter(p => p.category === activeCategory.value)
+})
+
+onMounted(async () => {
+  // Read category from URL query if present (e.g. Navigating from Home's ProductsGrid)
+  if (route.query.category) {
+    activeCategory.value = route.query.category as string
+  }
+  try {
+    const rawItems = await StoryblokService.getCatalogItems()
+
+    // Map the Storyblok data to our UI structure
+    products.value = rawItems.map(item => {
+      // Extract category from full_slug: "catalog/removables/acrylic-partials" -> "removables"
+      const slugParts = item.full_slug.split('/')
+      let rawCategory = 'General'
+      if (slugParts.length >= 3) {
+        rawCategory = slugParts[1] || 'General' // The folder name after 'catalog/'
+      }
+
+      // Capitalize category: "fixed" -> "Fixed"
+      const formattedCategory = rawCategory.charAt(0).toUpperCase() + rawCategory.slice(1)
+
+      return {
+        name: (item.content.title || item.name || '') as string,
+        image: item.content.fotos && item.content.fotos.length > 0 && item.content.fotos[0]?.filename ? item.content.fotos[0].filename : '',
+        category: (formattedCategory || '') as string,
+        slug: (item.slug || '') as string
+      }
+    })
+  } catch (error) {
+    console.error('Failed to load catalog:', error)
+  } finally {
+    loading.value = false
+  }
 })
 
 function openZoom(img: string) {
-  selectedImage.value = img
+  if (img) selectedImage.value = img
 }
 
 function closeZoom() {
@@ -67,10 +91,22 @@ function getWhatsappLink(productName: string) {
 
     <!-- Catalog Main Area -->
     <main class="catalog-main">
+      <div v-if="loading" class="catalog-loading">
+        <div class="spinner"></div>
+        <p>Loading catalog...</p>
+      </div>
+
       <!-- Filters -->
-      <div class="catalog-filters">
+      <div v-else class="catalog-filters">
         <button 
-          v-for="cat in categories" 
+          class="catalog-filter-btn"
+          :class="{ 'catalog-filter-btn--active': activeCategory === 'All' }"
+          @click="activeCategory = 'All'"
+        >
+          All
+        </button>
+        <button 
+          v-for="cat in dynamicCategories" 
           :key="cat"
           class="catalog-filter-btn"
           :class="{ 'catalog-filter-btn--active': activeCategory === cat }"
@@ -81,11 +117,11 @@ function getWhatsappLink(productName: string) {
       </div>
 
       <!-- Grid -->
-      <div class="catalog-grid">
+      <div v-if="!loading" class="catalog-grid">
         <TransitionGroup name="fade-list">
           <div 
             v-for="(product, idx) in filteredProducts" 
-            :key="product.name"
+            :key="product.slug || product.name"
             class="product-card"
             :style="{ animationDelay: `${idx * 0.05}s` }"
           >
@@ -170,6 +206,37 @@ function getWhatsappLink(productName: string) {
   margin: 0 auto;
   padding: 4rem 2rem 8rem;
   width: 100%;
+}
+
+// ─── Loading State ───
+.catalog-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  color: $text-muted;
+  text-align: center;
+
+  p {
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+  }
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba($primary, 0.2);
+  border-top-color: $primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // ─── Filters ───

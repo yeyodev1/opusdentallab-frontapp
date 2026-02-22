@@ -1,20 +1,43 @@
 <script setup lang="ts">
-const categories = [
+
+export interface CategoryCard {
+  number: string;
+  name: string;
+  icon: string;
+  description: string;
+}
+
+const props = defineProps<{
+  categories?: CategoryCard[]
+  hideTitle?: boolean
+  compact?: boolean
+}>()
+
+const defaultCategories: CategoryCard[] = [
   { number: '01', name: 'Fixed', icon: 'fa-solid fa-tooth', description: 'High-Precision Crowns & Bridges' },
   { number: '02', name: 'Implants', icon: 'fa-solid fa-screwdriver-wrench', description: 'Customized Implant Solutions' },
   { number: '03', name: 'Removables', icon: 'fa-solid fa-teeth-open', description: 'Comfortable, Durable Dentures' },
   { number: '04', name: 'Retainers', icon: 'fa-solid fa-teeth', description: 'Orthodontic Retention Appliances' },
 ]
+
+const displayCategories = props.categories?.length ? props.categories : defaultCategories
 </script>
 
 <template>
-  <section id="products" class="products">
+  <section id="products" class="products" :class="{ 'products--compact': compact }">
     <div class="products__inner">
-      <h2>Our Products</h2>
-      <p class="products__subtitle">We offer a comprehensive range of dental restorations and appliances, including fixed prosthetics, implants, removables, and retainers</p>
+      <div v-if="!hideTitle">
+        <h2>Our Products</h2>
+        <p class="products__subtitle">We offer a comprehensive range of dental restorations and appliances, including fixed prosthetics, implants, removables, and retainers</p>
+      </div>
 
       <div class="products__grid">
-        <RouterLink v-for="cat in categories" :key="cat.number" to="/catalog" class="products__card">
+        <RouterLink 
+          v-for="cat in displayCategories" 
+          :key="cat.name" 
+          :to="`/catalog?category=${cat.name}`" 
+          class="products__card"
+        >
           <span class="products__number">{{ cat.number }}</span>
           <i :class="cat.icon" class="products__icon"></i>
           <h3>{{ cat.name }}</h3>
@@ -43,6 +66,10 @@ const categories = [
 .products {
   padding: 6rem 2rem;
   background: $primary-dark;
+
+  &--compact {
+    padding: 2rem 2rem 4rem;
+  }
 
   &__inner {
     max-width: 1200px;

@@ -21,7 +21,15 @@ export interface BusinessCaseContent {
   fotos: StoryblokAsset[];
 }
 
+export interface CatalogItemContent {
+  _uid: string;
+  fotos: StoryblokAsset[];
+  title: string;
+  component: 'Catalogo item';
+}
+
 export type BusinessCaseStory = ISbStoryData<BusinessCaseContent>;
+export type CatalogStory = ISbStoryData<CatalogItemContent>;
 
 class StoryblokService {
   private client: StoryblokClient;
@@ -93,6 +101,23 @@ class StoryblokService {
       return null;
     } catch (error) {
       console.error(`StoryblokService: Error fetching case by slug ${slug}`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Fetches all catalog items from Storyblok.
+   * Filters by the 'catalog/' folder.
+   */
+  async getCatalogItems(): Promise<CatalogStory[]> {
+    try {
+      const response = await this.client.get('cdn/stories', {
+        version: 'published',
+        starts_with: 'catalog/',
+      });
+      return response.data.stories;
+    } catch (error) {
+      console.error('StoryblokService: Error fetching catalog items', error);
       throw error;
     }
   }
