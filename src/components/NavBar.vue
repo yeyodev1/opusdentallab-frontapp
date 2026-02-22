@@ -26,7 +26,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
       <!-- Logo Left -->
       <a href="#" class="navbar__logo">
         <img src="https://res.cloudinary.com/dpimsaaa4/image/upload/v1771789038/Logo_fondo_transparente_xwkvet.png" alt="Opus Dental Lab" />
-        <span>OPUS DENTAL LAB</span>
+        <span>PUS DENTAL LAB</span>
       </a>
 
       <!-- Links Center -->

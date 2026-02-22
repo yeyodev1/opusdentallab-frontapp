@@ -422,7 +422,10 @@
 
 @media (max-width: 768px) {
   .features {
+    padding: 5rem 1.5rem; // Restore standard mobile padding
+
     &__header {
+      padding: 0; // Remove the extra padding added for carousel
       flex-direction: column;
       gap: 1rem;
 
@@ -432,12 +435,43 @@
     }
   }
 
+  // ─── Vertical Stack for Mobile ───
   .features__grid {
+    display: grid;
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 1rem; // Adequate spacing between stacked cards
   }
 
+  .features__card {
+    // Reset any explicit grid positioning forcing tall cards
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    min-height: auto; // Let content dictate height
+    overflow: hidden; // Keep things constrained
+  }
+
+  // Optimize specific cards for mobile vertical view
   .features__card--credit {
-    grid-column: 1;
+    min-height: 280px;
+  }
+
+  .features__card--tooth {
+    min-height: 200px;
+    padding: 2rem;
+  }
+
+  .features__card--scanner {
+    min-height: 220px;
+    padding: 2rem;
+  }
+
+  .features__card--allonx-img {
+    padding: 2rem;
+
+    .features__allonx-image {
+      max-width: 180px; // Slightly smaller image on mobile to save space
+    }
   }
 }
 </style>
