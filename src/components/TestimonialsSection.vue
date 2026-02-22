@@ -40,15 +40,15 @@ const activeIdx = ref(0)
 
       <div class="testimonials__divider"></div>
 
-      <div class="testimonials__card">
+      <div v-if="testimonials[activeIdx]" class="testimonials__card">
         <span class="testimonials__quote-icon">"</span>
-        <blockquote>{{ testimonials[activeIdx].quote }}</blockquote>
+        <blockquote>{{ testimonials[activeIdx]?.quote }}</blockquote>
 
         <div class="testimonials__author">
-          <div class="testimonials__avatar">{{ testimonials[activeIdx].initials }}</div>
+          <div class="testimonials__avatar">{{ testimonials[activeIdx]?.initials }}</div>
           <div>
-            <strong>{{ testimonials[activeIdx].name }}</strong>
-            <p>{{ testimonials[activeIdx].practice }}</p>
+            <strong>{{ testimonials[activeIdx]?.name }}</strong>
+            <p>{{ testimonials[activeIdx]?.practice }}</p>
           </div>
         </div>
       </div>
