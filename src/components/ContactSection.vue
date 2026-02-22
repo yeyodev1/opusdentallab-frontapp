@@ -5,11 +5,11 @@ const contactFeatures = [
   {
     icon: 'fa-solid fa-location-dot',
     label: 'Main office - Orlando Fl',
-    sub: '7726 winegard rd, 2nd floor suite 38, Orlando, FL 32809'
+    sub: '7726 Winegard Rd, 2nd floor suite 38, Orlando, FL 32809'
   },
   { icon: 'fa-solid fa-microscope', label: 'Digital and physical impressions', sub: 'Precision in every scan and mold' },
-  { icon: 'fa-solid fa-truck-fast', label: 'Fast delivery - personal drivers', sub: 'Handling with care to your clinic' },
-  { icon: 'fa-solid fa-user-doctor', label: 'Personal assistant', sub: 'Dedicated support for every case' },
+  { icon: 'fa-solid fa-truck-fast', label: 'Fast Turn Around Time', sub: 'Reliable and punctual shipping' },
+  { icon: 'fa-solid fa-user-doctor', label: 'Doctor-to-Doctor Support', sub: 'Dedicated support for every case' },
   { icon: 'fa-solid fa-headset', label: 'Call service/support 24/7', sub: 'We are always here for you' },
 ]
 

@@ -1,16 +1,28 @@
 <script setup lang="ts">
 const cards = [
   {
-    id: 'partners',
-    title: 'Our Partners',
-    content:
-      'We work closely with dentists who demand excellence in materials, results, and ongoing support. From zirconia and lithium disilicate to PEEK and titanium bars, we use only clinically proven materials from trusted brands to ensure every restoration meets the highest standards. Beyond restorations, we invest in your growth. Our CE-accredited courses and clinical resources help partners stay current with the latest techniques in digital dentistry, full-arch restorations, and material selection.',
+    id: 'solutions',
+    title: 'Clinical Solutions & Support',
+    intro: '',
+    items: [
+      { highlight: 'Zero-Adjustment Fit', text: 'Save chairside time with digital precision.' },
+      { highlight: 'Surgical Guides', text: 'Predictable implant planning and placement.' },
+      { highlight: 'Ortho & Aligners', text: 'Custom appliances and clear aligner workflows.' },
+      { highlight: 'Advanced Prosthetics', text: 'High-end Zirconia, PEEK, and Titanium bars.' },
+      { highlight: 'Doctor-to-Doctor Support', text: 'Expert consulting for your most complex cases.' }
+    ]
   },
   {
-    id: 'technicians',
-    title: 'Our Technicians',
-    content:
-      'Our technicians are certified experts with extensive training in digital design, esthetic restorations, and full-arch workflows. With a deep understanding of clinical priorities, they approach every case with precision, consistency, and a commitment to excellence. Through continuous education and collaboration with doctors, they ensure restorations are delivered ready to seat — reducing chair time and elevating the quality of every outcome.',
+    id: 'leadership',
+    title: 'Clinical Leadership',
+    intro: 'Precision-driven by dental professionals.',
+    items: [
+      { highlight: 'Dentist-Led Quality Control', text: 'Every case reviewed for clinical accuracy.' },
+      { highlight: 'Full-Arch Specialists', text: 'Expert execution of complex digital workflows.' },
+      { highlight: 'Advanced CAD/CAM Design', text: 'High-fidelity restorations with minimal adjustments.' },
+      { highlight: 'Continuous Innovation', text: 'We stay at the forefront of digital dentistry.' },
+      { highlight: 'Predictable Outcomes', text: 'Reducing chairside stress, one case at a time.' }
+    ]
   },
 ]
 </script>
@@ -22,9 +34,8 @@ const cards = [
       <div class="about__header">
         <h2>About us</h2>
         <p>
-          We are a full-service dental laboratory committed to delivering
-          high-quality, state-of-the-art dental restorations with exceptional
-          value.
+          Premium restorations. Fewer remakes. More production.<br>
+          Built by dentists, for dentists.
         </p>
       </div>
 
@@ -48,7 +59,12 @@ const cards = [
           class="about__card"
         >
           <h3>{{ card.title }}</h3>
-          <p>{{ card.content }}</p>
+          <p v-if="card.intro" class="about__card-intro">{{ card.intro }}</p>
+          <ul class="about__card-list">
+            <li v-for="(item, i) in card.items" :key="i">
+              <strong>{{ item.highlight }}</strong> | {{ item.text }}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -162,13 +178,45 @@ const cards = [
       font-weight: 400;
       color: $text-light;
       letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
     }
 
-    p {
-      font-size: 0.82rem;
-      color: $text-secondary;
-      line-height: 1.75;
-      margin-top: 1.5rem;
+    .about__card-intro {
+      font-size: 0.9rem;
+      color: $primary;
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+    }
+
+    .about__card-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      li {
+        font-size: 0.85rem;
+        color: $text-secondary;
+        line-height: 1.5;
+        position: relative;
+        padding-left: 1.2rem;
+
+        &::before {
+          content: '•';
+          color: $primary;
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-size: 1.2rem;
+          line-height: 1.2;
+        }
+
+        strong {
+          color: $text-light;
+          font-weight: 600;
+        }
+      }
     }
   }
 }

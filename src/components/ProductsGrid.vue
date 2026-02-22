@@ -14,7 +14,7 @@ const categories = [
       <p class="products__subtitle">We offer a comprehensive range of dental restorations and appliances, including fixed prosthetics, implants, removables, and retainers</p>
 
       <div class="products__grid">
-        <a v-for="cat in categories" :key="cat.number" href="#showcase" class="products__card">
+        <a v-for="cat in categories" :key="cat.number" href="#catalog" class="products__card">
           <span class="products__number">{{ cat.number }}</span>
           <i :class="cat.icon" class="products__icon"></i>
           <h3>{{ cat.name }}</h3>

@@ -96,7 +96,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="gallery">
+  <section id="catalog" class="gallery">
     <div class="gallery__inner">
       <div class="gallery__header">
         <h2>Explore Our Catalog</h2>

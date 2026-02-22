@@ -6,7 +6,6 @@ const isMobileOpen = ref(false)
 
 const navLinks = [
   { label: 'Products', href: '#products', hasDropdown: true },
-  { label: 'Latest Cases', href: '#showcase', hasDropdown: false },
   { label: 'Workflow', href: '#features', hasDropdown: false },
   { label: 'Educational', href: '#about', hasDropdown: false },
   { label: 'Contact', href: '#contact', hasDropdown: true },
