@@ -29,6 +29,10 @@ const socialLinks = [
             <span>OPUS DENTAL LAB</span>
           </a>
           <p>Making Teeth Happy</p>
+          <div class="footer__address">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>7726 Winegard Rd, Suite 38, Orlando, FL 32809</span>
+          </div>
           <div class="footer__social">
             <a v-for="s in socialLinks" :key="s.icon" :href="s.href" target="_blank" aria-label="Social">
               <i :class="s.icon"></i>
@@ -89,6 +93,26 @@ const socialLinks = [
       color: $text-secondary;
       font-size: 0.9rem;
       margin-top: 0.75rem;
+    }
+
+    .footer__address {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      color: $text-muted;
+      font-size: 0.8rem;
+      line-height: 1.4;
+
+      i {
+        color: $primary;
+        font-size: 0.85rem;
+        margin-top: 0.2rem;
+      }
+
+      span {
+        max-width: 200px;
+      }
     }
   }
 
