@@ -1,12 +1,19 @@
-// Brand colors - customize per project
-$primary: #2094D2;
-$primary-dark: #010D27;
-$primary-light: #fefefe;
-$secondary: #2BBB92;
+// Brand colors - Dark + Red palette for Opus Dental Lab
+$primary: #C8102E;
+$primary-dark: #0A0A0A;
+$primary-light: #1A1A1A;
+$secondary: #E8343E;
 
 $white: #fefefe;
 $text-light: #fefefe;
-$text-secondary: #6b7280;
+$text-secondary: #9ca3af;
+$text-muted: #6b7280;
+
+// Surface colors for dark theme
+$surface-dark: #111111;
+$surface-card: #161616;
+$surface-elevated: #1e1e1e;
+$border-dark: rgba($white, 0.08);
 
 // Alert colors
 $alert-warning: #f59e0b;
