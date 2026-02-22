@@ -117,7 +117,7 @@ function handleWheel(e: WheelEvent) {
 let touchStartY = 0
 
 function handleTouchStart(e: TouchEvent) {
-  touchStartY = e.touches[0].clientY
+  touchStartY = e.touches[0]?.clientY ?? 0
 }
 
 function handleTouchMove(e: TouchEvent) {
@@ -126,7 +126,8 @@ function handleTouchMove(e: TouchEvent) {
 
 function handleTouchEnd(e: TouchEvent) {
   if (!isLocked.value) return
-  const diff = touchStartY - e.changedTouches[0].clientY
+  const touchEndY = e.changedTouches[0]?.clientY ?? 0
+  const diff = touchStartY - touchEndY
   if (Math.abs(diff) < 30) return
   goToProduct(diff > 0 ? 1 : -1)
 }
@@ -236,7 +237,7 @@ onUnmounted(() => {
 
         <div class="showcase__info">
           <Transition name="slide-up" mode="out-in">
-            <div :key="currentProduct.name" class="showcase__info-inner">
+            <div v-if="currentProduct" :key="currentProduct.name" class="showcase__info-inner">
               <h2>{{ currentProduct.name }}</h2>
               <p>{{ currentProduct.description }}</p>
             </div>
