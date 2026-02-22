@@ -5,11 +5,11 @@ const isScrolled = ref(false)
 const isMobileOpen = ref(false)
 
 const navLinks = [
-  { label: 'Products', href: '#products' },
-  { label: 'Latest Cases', href: '#showcase' },
-  { label: 'Workflow', href: '#features' },
-  { label: 'Educational', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Products', href: '#products', hasDropdown: true },
+  { label: 'Latest Cases', href: '#showcase', hasDropdown: false },
+  { label: 'Workflow', href: '#features', hasDropdown: false },
+  { label: 'Educational', href: '#about', hasDropdown: false },
+  { label: 'Contact', href: '#contact', hasDropdown: true },
 ]
 
 function handleScroll() {
@@ -23,19 +23,29 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 <template>
   <nav class="navbar" :class="{ 'navbar--scrolled': isScrolled }">
     <div class="navbar__inner">
+      <!-- Logo Left -->
       <a href="#" class="navbar__logo">
-        <i class="fa-solid fa-tooth"></i>
+        <img src="https://res.cloudinary.com/dpimsaaa4/image/upload/v1771789038/Logo_fondo_transparente_xwkvet.png" alt="Opus Dental Lab" />
         <span>OPUS DENTAL LAB</span>
       </a>
 
+      <!-- Links Center -->
       <ul class="navbar__links">
         <li v-for="link in navLinks" :key="link.label">
-          <a :href="link.href">{{ link.label }}</a>
+          <a :href="link.href" class="navbar__link">
+            {{ link.label }}
+            <i v-if="link.hasDropdown" class="fa-solid fa-chevron-down navbar__dropdown-icon"></i>
+          </a>
         </li>
       </ul>
 
-      <button class="navbar__hamburger" @click="isMobileOpen = !isMobileOpen" aria-label="Menu">
-        <i :class="isMobileOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+      <!-- Menu Right -->
+      <button class="navbar__menu-btn" @click="isMobileOpen = !isMobileOpen" aria-label="Menu">
+        <span class="navbar__menu-label">Menu</span>
+        <div class="navbar__hamburger">
+          <span></span>
+          <span></span>
+        </div>
       </button>
     </div>
 
@@ -57,108 +67,162 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 1.25rem 2rem;
-  transition: background 0.3s, backdrop-filter 0.3s, padding 0.3s;
+  padding: 1.5rem 3rem;
+  transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
 
   &--scrolled {
-    background: rgba($primary-dark, 0.85);
-    backdrop-filter: blur(12px);
-    padding: 0.75rem 2rem;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    padding: 1rem 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   &__inner {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
   }
 
   &__logo {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: $primary;
-    letter-spacing: 0.05em;
 
-    i {
-      font-size: 1.3rem;
+    img {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    span {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: $white;
+      white-space: nowrap;
     }
   }
 
   &__links {
     list-style: none;
     display: flex;
-    gap: 2rem;
+    gap: 2.5rem;
+    justify-content: center;
 
-    a {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: $text-light;
-      opacity: 0.85;
-      transition: opacity 0.2s, color 0.2s;
-
-      &:hover {
-        opacity: 1;
-        color: $primary;
-      }
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: 1100px) {
       display: none;
     }
   }
 
-  &__hamburger {
-    display: none;
+  &__link {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: $white;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__dropdown-icon {
+    font-size: 0.65rem;
+    opacity: 0.6;
+  }
+
+  &__menu-btn {
+    justify-self: end;
     background: none;
     border: none;
-    color: $text-light;
-    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: $white;
     cursor: pointer;
+    padding: 0.5rem;
+    transition: opacity 0.2s;
 
-    @media (max-width: 768px) {
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__menu-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  &__hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    span {
       display: block;
+      width: 18px;
+      height: 1.5px;
+      background: $white;
+      transition: transform 0.3s;
     }
   }
 
   &__mobile {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
-    padding: 1rem 2rem 2rem;
-    gap: 1rem;
+    gap: 1.5rem;
+    padding: 2rem 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 
     a {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: $text-light;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid $border-dark;
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: $white;
+      transition: color 0.2s;
 
       &:hover {
-        color: $primary;
+        color: rgba($white, 0.7);
       }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1.25rem 1.5rem;
+
+    &--scrolled {
+      padding: 0.75rem 1.5rem;
+    }
+
+    &__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &__menu-label {
+      display: none;
     }
   }
 }
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: max-height 0.3s ease, opacity 0.3s ease;
-  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
 }
 
 .slide-enter-from,
 .slide-leave-to {
-  max-height: 0;
+  transform: translateY(-10px);
   opacity: 0;
-}
-
-.slide-enter-to,
-.slide-leave-from {
-  max-height: 400px;
-  opacity: 1;
 }
 </style>
