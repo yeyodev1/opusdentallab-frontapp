@@ -8,6 +8,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: 'Opus Dental Lab' },
   },
   {
+    path: '/catalog',
+    name: 'Catalog',
+    component: () => import('../views/CatalogView.vue'),
+    meta: { title: 'Our Catalog' },
+  },
+  {
     path: '/old-home',
     name: 'OldHome',
     component: () => import('../views/HomeView.vue'),

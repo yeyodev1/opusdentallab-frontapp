@@ -1,15 +1,17 @@
 <script setup lang="ts">
 const productLinks = [
-  { label: 'Fixed', href: '#products' },
-  { label: 'Implants', href: '#products' },
-  { label: 'Removables', href: '#products' },
-  { label: 'Retainers', href: '#products' },
+  { label: 'Fixed', href: '/catalog' },
+  { label: 'Implants', href: '/catalog' },
+  { label: 'Removables', href: '/catalog' },
+  { label: 'Retainers', href: '/catalog' },
 ]
 
-const resourceLinks = [
-  { label: 'Shipping & Logistics', href: '#' },
-  { label: 'Remakes & Warranties', href: '#' },
-  { label: 'Technical Support', href: '#contact' },
+const rxLinks = [
+  { label: "Dr's Digital Scan Instructions", href: 'https://drive.google.com/file/d/1pNuZY2g0qaOor931vNi2jY8Jegqc4Fwf/view?usp=sharing' },
+  { label: "Doctor Digital Scan Instructions", href: 'https://drive.google.com/file/d/1lqp2sdszi-yy18Qit_1ZDAQTNaylXrvw/view?usp=sharing' },
+  { label: "Fixed RX", href: 'https://drive.google.com/file/d/1ZmNF3upDEIQN9DMOV4ud2yLSvADgvrMV/view?usp=sharing' },
+  { label: "Implant Rx", href: 'https://drive.google.com/file/d/1aqdUVZHN1SRyB7d01QzMuDYiwMHozyRm/view?usp=sharing' },
+  { label: "Removable Rx", href: 'https://drive.google.com/file/d/113jxjkCaCNIj9RaOr7vtKxfs0OrEq3lA/view?usp=sharing' },
 ]
 
 const socialLinks = [
@@ -28,7 +30,7 @@ const socialLinks = [
             <img src="https://res.cloudinary.com/dpimsaaa4/image/upload/v1771789038/Logo_fondo_transparente_xwkvet.png" alt="Opus Dental Lab" />
             <span>OPUS DENTAL LAB</span>
           </a>
-          <p>Making Teeth Happy</p>
+          <p>Ready to smile</p>
           <div class="footer__address">
             <i class="fa-solid fa-location-dot"></i>
             <span>7726 Winegard Rd, Suite 38, Orlando, FL 32809</span>
@@ -42,12 +44,12 @@ const socialLinks = [
 
         <div class="footer__col">
           <h4>Products</h4>
-          <a v-for="link in productLinks" :key="link.label" :href="link.href">{{ link.label }}</a>
+          <RouterLink v-for="link in productLinks" :key="link.label" :to="link.href">{{ link.label }}</RouterLink>
         </div>
 
         <div class="footer__col">
-          <h4>Resources</h4>
-          <a v-for="link in resourceLinks" :key="link.label" :href="link.href">{{ link.label }}</a>
+          <h4>Forms & RX</h4>
+          <a v-for="link in rxLinks" :key="link.label" :href="link.href" target="_blank">{{ link.label }}</a>
         </div>
 
         <div class="footer__col">
@@ -61,7 +63,7 @@ const socialLinks = [
       </div>
 
       <div class="footer__bottom">
-        <p>OPUS DENTAL LAB LLC — ALL RIGHTS RESERVED — © {{ new Date().getFullYear() }}</p>
+        <p>OPUS DENTAL LAB — ALL RIGHTS RESERVED — © {{ new Date().getFullYear() }}</p>
         <p class="footer__dev">
           Developed by <a href="https://yeyo.dev/" target="_blank">yeyo.dev</a>
         </p>

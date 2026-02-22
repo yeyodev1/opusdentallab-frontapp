@@ -5,10 +5,10 @@ const isScrolled = ref(false)
 const isMobileOpen = ref(false)
 
 const navLinks = [
-  { label: 'Products', href: '#products', hasDropdown: true },
-  { label: 'Workflow', href: '#features', hasDropdown: false },
-  { label: 'Educational', href: '#about', hasDropdown: false },
-  { label: 'Contact', href: '#contact', hasDropdown: true },
+  { label: 'Products', href: '/catalog', hasDropdown: false },
+  { label: 'Workflow', href: '/#features', hasDropdown: false },
+  { label: 'Educational', href: '/#about', hasDropdown: false },
+  { label: 'Contact', href: '/#contact', hasDropdown: true },
 ]
 
 function handleScroll() {
@@ -23,18 +23,18 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   <nav class="navbar" :class="{ 'navbar--scrolled': isScrolled }">
     <div class="navbar__inner">
       <!-- Logo Left -->
-      <a href="#" class="navbar__logo">
+      <RouterLink to="/" class="navbar__logo">
         <img src="https://res.cloudinary.com/dpimsaaa4/image/upload/v1771789038/Logo_fondo_transparente_xwkvet.png" alt="Opus Dental Lab" />
-        <span>PUS DENTAL LAB</span>
-      </a>
+        <span>OPUS DENTAL LAB</span>
+      </RouterLink>
 
       <!-- Links Center -->
       <ul class="navbar__links">
         <li v-for="link in navLinks" :key="link.label">
-          <a :href="link.href" class="navbar__link">
+          <RouterLink :to="link.href" class="navbar__link">
             {{ link.label }}
             <i v-if="link.hasDropdown" class="fa-solid fa-chevron-down navbar__dropdown-icon"></i>
-          </a>
+          </RouterLink>
         </li>
       </ul>
 
@@ -51,9 +51,9 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     <!-- Mobile menu -->
     <Transition name="slide">
       <div v-if="isMobileOpen" class="navbar__mobile">
-        <a v-for="link in navLinks" :key="link.label" :href="link.href" @click="isMobileOpen = false">
+        <RouterLink v-for="link in navLinks" :key="link.label" :to="link.href" @click="isMobileOpen = false">
           {{ link.label }}
-        </a>
+        </RouterLink>
       </div>
     </Transition>
   </nav>

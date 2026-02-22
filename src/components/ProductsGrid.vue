@@ -14,13 +14,19 @@ const categories = [
       <p class="products__subtitle">We offer a comprehensive range of dental restorations and appliances, including fixed prosthetics, implants, removables, and retainers</p>
 
       <div class="products__grid">
-        <a v-for="cat in categories" :key="cat.number" href="#catalog" class="products__card">
+        <RouterLink v-for="cat in categories" :key="cat.number" to="/catalog" class="products__card">
           <span class="products__number">{{ cat.number }}</span>
           <i :class="cat.icon" class="products__icon"></i>
           <h3>{{ cat.name }}</h3>
           <p>{{ cat.description }}</p>
           <i class="fa-solid fa-arrow-right products__arrow"></i>
-        </a>
+        </RouterLink>
+      </div>
+
+      <div class="products__catalog-action">
+        <RouterLink to="/catalog" class="products__btn products__btn--catalog">
+          View Full Catalog <i class="fa-solid fa-arrow-right"></i>
+        </RouterLink>
       </div>
 
       <div class="products__cta-row">
@@ -118,6 +124,12 @@ const categories = [
     transition: opacity 0.3s, transform 0.3s;
   }
 
+  &__catalog-action {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3.5rem;
+  }
+
   &__cta-row {
     display: flex;
     align-items: center;
@@ -145,11 +157,25 @@ const categories = [
     font-size: 0.85rem;
     font-weight: 500;
     color: $text-light;
-    transition: background 0.3s, border-color 0.3s;
+    text-decoration: none;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
 
     &:hover {
       background: rgba($primary, 0.15);
       border-color: $primary;
+    }
+
+    &--catalog {
+      background: $primary;
+      border-color: $primary;
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+
+      &:hover {
+        background: transparent;
+        transform: translateY(-2px);
+      }
     }
   }
 }

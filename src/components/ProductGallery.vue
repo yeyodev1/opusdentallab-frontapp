@@ -37,12 +37,14 @@ const trackRef = ref<HTMLElement | null>(null)
 const isDragging = ref(false)
 let startX = 0
 let scrollLeft = 0
+let pointerDownX = 0
 
 function onPointerDown(e: PointerEvent) {
   if (!trackRef.value) return
   isDragging.value = true
   startX = e.clientX - trackRef.value.offsetLeft
   scrollLeft = trackRef.value.scrollLeft
+  pointerDownX = e.clientX
   trackRef.value.setPointerCapture(e.pointerId)
 }
 
@@ -57,6 +59,12 @@ function onPointerUp() {
   isDragging.value = false
 }
 
+function onCardClick(e: MouseEvent) {
+  if (Math.abs(e.clientX - pointerDownX) > 5) {
+    e.preventDefault()
+  }
+}
+
 // Auto-scroll animation
 let autoScrollId = 0
 const isPaused = ref(false)
@@ -69,7 +77,7 @@ function autoScroll() {
   }
 
   // Calculate movement based on direction
-  trackRef.value.scrollLeft += 1.5 * scrollDirection
+  trackRef.value.scrollLeft += 0.8 * scrollDirection
 
   // Bounce/Alternate effect when reaching ends
   const maxScroll = trackRef.value.scrollWidth - trackRef.value.clientWidth
@@ -100,10 +108,15 @@ onUnmounted(() => {
     <div class="gallery__inner">
       <div class="gallery__header">
         <h2>Explore Our Catalog</h2>
-        <p>
-          From removables and retainers to precision orthodontic appliances —
-          browse our complete line of premium dental products.
-        </p>
+        <div class="gallery__header-right">
+          <p>
+            From removables and retainers to precision orthodontic appliances —
+            browse our complete line of premium dental products.
+          </p>
+          <RouterLink to="/catalog" class="gallery__btn">
+            View Full Catalog <i class="fa-solid fa-arrow-right"></i>
+          </RouterLink>
+        </div>
       </div>
 
       <div class="gallery__hint">
@@ -123,23 +136,29 @@ onUnmounted(() => {
       @mouseenter="isPaused = true"
       @mouseleave="isPaused = false"
     >
-      <div
+      <RouterLink
         v-for="(product, i) in products"
         :key="i"
+        to="/catalog"
         class="gallery__card"
+        draggable="false"
+        @dragstart.prevent
+        @click="onCardClick"
       >
         <div class="gallery__card-image">
           <img
             :src="product.image"
             :alt="product.name"
             loading="lazy"
+            draggable="false"
+            @dragstart.prevent
           />
         </div>
         <div class="gallery__card-info">
           <span class="gallery__card-category">{{ product.category }}</span>
           <h3 class="gallery__card-name">{{ product.name }}</h3>
         </div>
-      </div>
+      </RouterLink>
     </div>
   </section>
 </template>
@@ -171,12 +190,39 @@ onUnmounted(() => {
       letter-spacing: -0.02em;
     }
 
+  }
+
+  &__header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.25rem;
+    max-width: 420px;
+
     p {
-      max-width: 420px;
       font-size: 0.95rem;
       color: $text-secondary;
       line-height: 1.7;
       text-align: right;
+    }
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    border: 1px solid rgba($white, 0.2);
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: $text-light;
+    text-decoration: none;
+    transition: background 0.3s, border-color 0.3s;
+
+    &:hover {
+      background: rgba($primary, 0.15);
+      border-color: $primary;
     }
   }
 
@@ -229,6 +275,8 @@ onUnmounted(() => {
     background: $surface-card;
     border: 1px solid $border-dark;
     transition: border-color 0.3s, transform 0.3s;
+    text-decoration: none;
+    cursor: pointer;
 
     &:hover {
       border-color: rgba($primary, 0.25);
@@ -289,6 +337,12 @@ onUnmounted(() => {
     &__header {
       flex-direction: column;
       gap: 1rem;
+
+    }
+
+    &__header-right {
+      align-items: flex-start;
+      max-width: 100%;
 
       p {
         text-align: left;

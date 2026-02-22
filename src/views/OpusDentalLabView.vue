@@ -4,7 +4,6 @@ import HeroSection from '@/components/HeroSection.vue'
 import TrustBanner from '@/components/TrustBanner.vue'
 import FeaturesGrid from '@/components/FeaturesGrid.vue'
 import StatsSection from '@/components/StatsSection.vue'
-import ProductShowcase from '@/components/ProductShowcase.vue'
 import ProductGallery from '@/components/ProductGallery.vue'
 import AboutSection from '@/components/AboutSection.vue'
 import ProductsGrid from '@/components/ProductsGrid.vue'
@@ -20,7 +19,6 @@ import FooterSection from '@/components/FooterSection.vue'
     <TrustBanner />
     <FeaturesGrid />
     <StatsSection />
-    <ProductShowcase />
     <ProductGallery />
     <AboutSection />
     <ProductsGrid />
