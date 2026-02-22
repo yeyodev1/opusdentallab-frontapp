@@ -1,27 +1,35 @@
 @use './colorVariables.module.scss' as *;
 @use './fonts.module.scss' as *;
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
-  background-color: $white;
+  background-color: $primary-dark;
+  color: $text-light;
   margin: 0;
   font-family: $font-principal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 :root {
-  --bg: #{$white};
-  --text: #{$primary-dark};
-  --border: #{rgba($primary-dark, 0.08)};
-  --accent: #{$primary};
-}
-
-[data-theme='dark'] {
   --bg: #{$primary-dark};
   --text: #{$text-light};
-  --border: #{rgba($white, 0.12)};
+  --border: #{$border-dark};
   --accent: #{$primary};
+  --surface: #{$surface-dark};
+  --surface-card: #{$surface-card};
+  --surface-elevated: #{$surface-elevated};
 }
 
-body {
-  background-color: var(--bg);
-  color: var(--text);
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
