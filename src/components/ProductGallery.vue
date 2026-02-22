@@ -60,6 +60,7 @@ function onPointerUp() {
 // Auto-scroll animation
 let autoScrollId = 0
 const isPaused = ref(false)
+let scrollDirection = 1
 
 function autoScroll() {
   if (!trackRef.value || isDragging.value || isPaused.value) {
@@ -67,12 +68,19 @@ function autoScroll() {
     return
   }
 
-  trackRef.value.scrollLeft += 0.5
+  // Calculate movement based on direction
+  trackRef.value.scrollLeft += 1.5 * scrollDirection
 
-  // Loop: reset when reaching the end
+  // Bounce/Alternate effect when reaching ends
   const maxScroll = trackRef.value.scrollWidth - trackRef.value.clientWidth
-  if (trackRef.value.scrollLeft >= maxScroll) {
-    trackRef.value.scrollLeft = 0
+
+  // If we hit the right boundary, reverse to move left
+  if (trackRef.value.scrollLeft >= maxScroll - 1) {
+    scrollDirection = -1
+  }
+  // If we hit the left boundary (start), reverse to move right
+  else if (trackRef.value.scrollLeft <= 0) {
+    scrollDirection = 1
   }
 
   autoScrollId = requestAnimationFrame(autoScroll)
