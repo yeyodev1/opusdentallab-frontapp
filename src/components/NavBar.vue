@@ -197,16 +197,21 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   }
 }
 
+@media (max-width: 1100px) {
+  .navbar {
+    &__inner {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .navbar {
     padding: 1.25rem 1.5rem;
 
     &--scrolled {
       padding: 0.75rem 1.5rem;
-    }
-
-    &__inner {
-      grid-template-columns: 1fr 1fr;
     }
 
     &__menu-label {
