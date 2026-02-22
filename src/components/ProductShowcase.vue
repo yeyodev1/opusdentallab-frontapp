@@ -156,7 +156,7 @@ function setupObserver() {
   observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting || isLocked.value || cooldownTimer) return
+        if (!entry.isIntersecting || isLocked.value || cooldownTimer || (window as any).__navigating) return
 
         // Determine scroll direction at the moment of intersection
         const scrollingDown = window.scrollY >= lastScrollY

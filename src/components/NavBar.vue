@@ -5,15 +5,27 @@ const isScrolled = ref(false)
 const isMobileOpen = ref(false)
 
 const navLinks = [
-  { label: 'Products', href: '/catalog', hasDropdown: false },
-  { label: 'Latest Cases', href: '/cases', hasDropdown: false },
-  { label: 'Workflow', href: '/#features', hasDropdown: false },
-  { label: 'Educational', href: '/#about', hasDropdown: false },
-  { label: 'Contact', href: '/#contact', hasDropdown: true },
+  { label: 'Products', href: '/catalog', isHighlight: false },
+  { label: 'Latest Cases', href: '/cases', isHighlight: false },
+  { label: 'Workflow', href: '/#features', isHighlight: false },
+  { label: 'Educational', href: '/#about', isHighlight: false },
+  { label: 'Contact', href: '/#contact', isHighlight: false },
+  { label: 'Forms & Rx', href: '/#footer', isHighlight: true, icon: 'fa-solid fa-file-arrow-down' },
 ]
 
 function handleScroll() {
   isScrolled.value = window.scrollY > 50
+}
+
+function handleLinkClick(href: string) {
+  isMobileOpen.value = false
+  if (href.includes('#')) {
+    // Prevent ProductShowcase from locking during the jump
+    ; (window as any).__navigating = true
+    setTimeout(() => {
+      ; (window as any).__navigating = false
+    }, 1200)
+  }
 }
 
 onMounted(() => window.addEventListener('scroll', handleScroll))
@@ -32,9 +44,14 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
       <!-- Links Center -->
       <ul class="navbar__links">
         <li v-for="link in navLinks" :key="link.label">
-          <RouterLink :to="link.href" class="navbar__link">
+          <RouterLink 
+            :to="link.href" 
+            class="navbar__link" 
+            :class="{ 'navbar__link--highlight': link.isHighlight }"
+            @click="handleLinkClick(link.href)"
+          >
+            <i v-if="link.icon && link.isHighlight" :class="link.icon"></i>
             {{ link.label }}
-            <i v-if="link.hasDropdown" class="fa-solid fa-chevron-down navbar__dropdown-icon"></i>
           </RouterLink>
         </li>
       </ul>
@@ -49,10 +66,17 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
       </button>
     </div>
 
-    <!-- Mobile menu -->
     <Transition name="slide">
       <div v-if="isMobileOpen" class="navbar__mobile">
-        <RouterLink v-for="link in navLinks" :key="link.label" :to="link.href" @click="isMobileOpen = false">
+        <RouterLink 
+          v-for="link in navLinks" 
+          :key="link.label" 
+          :to="link.href" 
+          class="navbar__mobile-link" 
+          :class="{ 'navbar__mobile-link--highlight': link.isHighlight }"
+          @click="handleLinkClick(link.href)"
+        >
+          <i v-if="link.icon && link.isHighlight" :class="link.icon"></i>
           {{ link.label }}
         </RouterLink>
       </div>
@@ -80,8 +104,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   &__inner {
     max-width: 1600px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
   }
 
@@ -107,8 +131,9 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   &__links {
     list-style: none;
     display: flex;
+    align-items: center;
     gap: 2.5rem;
-    justify-content: center;
+    justify-content: flex-end;
 
     @media (max-width: 1100px) {
       display: none;
@@ -122,10 +147,30 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    transition: opacity 0.2s;
+    transition: all 0.3s ease;
 
     &:hover {
       opacity: 0.7;
+    }
+
+    &--highlight {
+      color: $primary;
+      font-weight: 500;
+      border: 1px solid rgba($primary, 0.3);
+      padding: 0.6rem 1.25rem;
+      border-radius: 99px;
+      margin-left: 0.5rem;
+
+      &:hover {
+        opacity: 1;
+        background: rgba($primary, 0.1);
+        border-color: $primary;
+        transform: translateY(-2px);
+      }
+
+      i {
+        font-size: 1rem;
+      }
     }
   }
 
@@ -135,7 +180,6 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   }
 
   &__menu-btn {
-    justify-self: end;
     background: none;
     border: none;
     display: flex;
@@ -148,6 +192,10 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
     &:hover {
       opacity: 0.7;
+    }
+
+    @media (min-width: 1101px) {
+      display: none;
     }
   }
 
@@ -180,28 +228,35 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 1.5rem;
     padding: 2rem 3rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 
-    a {
+    .navbar__mobile-link {
       font-size: 1.5rem;
       font-weight: 300;
       color: $white;
       transition: color 0.2s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      gap: 0.75rem;
 
       &:hover {
         color: rgba($white, 0.7);
       }
-    }
-  }
-}
 
-@media (max-width: 1100px) {
-  .navbar {
-    &__inner {
-      display: flex;
-      justify-content: space-between;
+      &--highlight {
+        color: $primary;
+        font-weight: 400;
+        margin-top: 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
     }
   }
 }
