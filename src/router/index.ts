@@ -14,6 +14,18 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: 'Our Catalog' },
   },
   {
+    path: '/cases',
+    name: 'Cases',
+    component: () => import('../views/LatestCasesView.vue'),
+    meta: { title: 'Latest Cases' },
+  },
+  {
+    path: '/cases/:slug',
+    name: 'CaseDetail',
+    component: () => import('../views/CaseDetailView.vue'),
+    meta: { title: 'Case Detail' },
+  },
+  {
     path: '/old-home',
     name: 'OldHome',
     component: () => import('../views/HomeView.vue'),

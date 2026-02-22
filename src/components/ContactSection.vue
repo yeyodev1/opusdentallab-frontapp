@@ -44,7 +44,6 @@ const formFeatures = [
         muted
         loop
         playsinline
-        poster="https://res.cloudinary.com/dpimsaaa4/image/upload/v1771786054/cloudinary_all_on_x_image_1771786054682.png"
       >
         <source src="https://framerusercontent.com/assets/vCKhCkTUc2qTJiRCbEn0NhDWRiE.mp4" type="video/mp4" />
       </video>
