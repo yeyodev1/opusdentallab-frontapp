@@ -4,8 +4,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
+    component: () => import('../views/OpusDentalLabView.vue'),
+    meta: { title: 'Opus Dental Lab' },
+  },
+  {
+    path: '/old-home',
+    name: 'OldHome',
     component: () => import('../views/HomeView.vue'),
-    meta: { title: 'Home' },
+    meta: { title: 'Old Home' },
   },
 ]
 
