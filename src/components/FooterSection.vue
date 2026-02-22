@@ -26,7 +26,7 @@ const socialLinks = [
       <div class="footer__top">
         <div class="footer__brand">
           <a href="#" class="footer__logo">
-            <i class="fa-solid fa-tooth"></i>
+            <img src="https://res.cloudinary.com/dpimsaaa4/image/upload/v1771789038/Logo_fondo_transparente_xwkvet.png" alt="Opus Dental Lab" />
             <span>OPUS DENTAL LAB</span>
           </a>
           <p>Making Teeth Happy</p>
@@ -93,13 +93,18 @@ const socialLinks = [
   &__logo {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: $primary;
+    gap: 0.75rem;
+    color: $white;
 
-    i {
-      font-size: 1.3rem;
+    img {
+      height: 28px;
+      width: auto;
+    }
+
+    span {
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
     }
   }
 
