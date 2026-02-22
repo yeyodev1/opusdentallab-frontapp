@@ -1,19 +1,20 @@
 <script setup lang="ts">
-const partners = [
-  'University of Miami',
-  'Prep Doctors',
-  'NADL',
-  'Jackson Health System',
-  'TCS',
-  'Henry Schein',
+const trustItems = [
+  { text: 'Premium Dental Lab', icon: 'fa-solid fa-tooth' },
+  { text: 'Digital Workflow', icon: 'fa-solid fa-laptop-medical' },
+  { text: 'All-on-X Experts', icon: 'fa-solid fa-star' },
+  { text: 'Fast Delivery', icon: 'fa-solid fa-truck-fast' },
+  { text: 'Cosmetic Excellence', icon: 'fa-solid fa-gem' },
+  { text: 'High Precision', icon: 'fa-solid fa-crosshairs' },
 ]
 </script>
 
 <template>
   <section class="trust-banner">
     <div class="trust-banner__track">
-      <span v-for="(partner, i) in [...partners, ...partners]" :key="i" class="trust-banner__item">
-        {{ partner }}
+      <span v-for="(item, i) in [...trustItems, ...trustItems, ...trustItems]" :key="i" class="trust-banner__item">
+        <i :class="item.icon"></i>
+        {{ item.text }}
       </span>
     </div>
   </section>
@@ -39,9 +40,23 @@ const partners = [
     font-size: 1rem;
     font-weight: 600;
     color: $text-secondary;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     opacity: 0.7;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: opacity 0.3s, color 0.3s;
+
+    &:hover {
+      opacity: 1;
+      color: $primary;
+    }
+
+    i {
+      color: $primary;
+      font-size: 1.1rem;
+    }
   }
 }
 

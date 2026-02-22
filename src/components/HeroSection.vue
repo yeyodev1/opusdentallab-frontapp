@@ -46,9 +46,9 @@ onMounted(() => {
     <!-- UI Overlay: Bottom Left Title -->
     <div class="hero__content">
       <p class="hero__subtitle">FASTEST GROWING</p>
-      <h1 class="hero__title">
-        OPUS DENTAL<br />
-        LAB LLC
+      <h1 class="hero__title hero__title--client">
+        Welcome to the First<br />
+        Dental Lab with Dentist-Led
       </h1>
     </div>
 
@@ -142,11 +142,20 @@ onMounted(() => {
   }
 
   &__title {
-    font-size: clamp(3.5rem, 10vw, 8rem);
-    font-weight: 900;
-    line-height: 0.9;
-    letter-spacing: -0.04em;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 700;
+    line-height: 0.95;
+    color: $white;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
+
+    &--client {
+      font-size: clamp(2rem, 5vw, 4.5rem); // Significantly smaller
+      font-weight: 600; // Slightly lighter for readability
+      text-transform: none; // Normal casing as requested
+      line-height: 1.1; // Better spacing for sentence-case text
+      max-width: 800px;
+    }
   }
 
   // ─── CTA Wrapper (Bottom Right) ───
