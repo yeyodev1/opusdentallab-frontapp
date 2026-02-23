@@ -33,25 +33,16 @@
           <h3>Cosmetic Excellence</h3>
         </div>
 
-        <!-- 3. Tooth graphic — bottom center-left -->
-        <div class="features__card features__card--tooth">
-          <div class="features__tooth-graphic">
-            <svg viewBox="0 0 120 140" class="features__tooth-svg">
-              <path
-                d="M60 8 C40 8 20 20 18 50 C16 75 30 100 40 120 C45 130 50 135 55 135 C58 135 60 128 60 120 C60 128 62 135 65 135 C70 135 75 130 80 120 C90 100 104 75 102 50 C100 20 80 8 60 8Z"
-                fill="none"
-                stroke="rgba(255,255,255,0.15)"
-                stroke-width="1.5"
-              />
-              <path
-                d="M60 8 C40 8 20 20 18 50 C16 75 30 100 40 120 C45 130 50 135 55 135 C58 135 60 128 60 120 C60 128 62 135 65 135 C70 135 75 130 80 120 C90 100 104 75 102 50 C100 20 80 8 60 8Z"
-                fill="rgba(255,255,255,0.04)"
-              />
-            </svg>
-            <i class="fa-solid fa-sparkles features__sparkle"></i>
+        <!-- 3. Latest Cases link — bottom center-left -->
+        <RouterLink to="/cases" class="features__card features__card--cases">
+          <div class="features__cases-icon-wrap">
+            <i class="fa-solid fa-camera-retro"></i>
+            <i class="fa-solid fa-sparkles"></i>
           </div>
-          <span class="features__beauty-tag">Maximum Beauty +</span>
-        </div>
+          <h3>See Our Real Results</h3>
+          <p>Real-world clinical outcomes and precision-crafted cases.</p>
+          <span class="features__cases-tag">Clinical Gallery <i class="fa-solid fa-chevron-right"></i></span>
+        </RouterLink>
 
         <!-- 4. Scanner — spans rows 1-2, col 3 -->
         <div class="features__card features__card--scanner">
@@ -192,47 +183,76 @@
   }
 
   // ─── 3. Tooth graphic ───
-  &__card--tooth {
+  &__card--cases {
     grid-column: 2;
     grid-row: 2 / 4;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     position: relative;
     min-height: 220px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s;
+    background: linear-gradient(135deg, rgba($primary, 0.05) 0%, $surface-card 100%);
+
+    &:hover {
+      background: linear-gradient(135deg, rgba($primary, 0.08) 0%, $surface-card 100%);
+      transform: translateY(-5px);
+
+      .features__cases-icon-wrap i:first-child {
+        transform: scale(1.1) rotate(-5deg);
+        color: $primary;
+      }
+    }
   }
 
-  &__tooth-graphic {
+  &__cases-icon-wrap {
     position: relative;
-    width: 100px;
-    height: 120px;
+    margin-bottom: 1.5rem;
+
+    i:first-child {
+      font-size: 2rem;
+      color: rgba($primary, 0.8);
+      transition: all 0.4s ease;
+    }
+
+    .fa-sparkles {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      font-size: 0.9rem;
+      color: rgba($white, 0.3);
+      animation: pulse-sparkle 2s infinite;
+    }
   }
 
-  &__tooth-svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  &__sparkle {
-    position: absolute;
-    top: -4px;
-    right: -8px;
-    font-size: 1rem;
-    color: rgba($white, 0.3);
-  }
-
-  &__beauty-tag {
+  &__cases-tag {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
     margin-top: 1.25rem;
-    padding: 0.4rem 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 99px;
-    background: rgba($white, 0.06);
-    border: 1px solid rgba($white, 0.08);
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: $text-secondary;
-    letter-spacing: 0.05em;
+    background: rgba($primary, 0.1);
+    border: 1px solid rgba($primary, 0.2);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $primary;
+    transition: all 0.3s ease;
+
+    i {
+      font-size: 0.7rem;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  &__card--cases:hover &__cases-tag {
+    background: $primary;
+    color: $white;
+
+    i {
+      transform: translateX(3px);
+    }
   }
 
   // ─── 4. Scanner ───
@@ -411,7 +431,7 @@
     grid-row: auto;
   }
 
-  .features__card--tooth {
+  .features__card--cases {
     grid-row: auto;
   }
 
@@ -456,7 +476,7 @@
     min-height: 280px;
   }
 
-  .features__card--tooth {
+  .features__card--cases {
     min-height: 200px;
     padding: 2rem;
   }
