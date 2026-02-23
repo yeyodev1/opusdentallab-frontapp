@@ -99,7 +99,7 @@ const formFeatures = [
               <div class="contact__extra-info">
                 <div class="contact__email">
                   <i class="fa-solid fa-envelope"></i>
-                  <a href="mailto:info@opusdentallab.com">info@opusdentallab.com</a>
+                  <a href="mailto:info@opusdentallab.info">info@opusdentallab.info</a>
                 </div>
                 
                 <div class="contact__address-block">
@@ -163,7 +163,7 @@ const formFeatures = [
             <div class="location-col">
               <h4>Connect with our team in Florida</h4>
               <a href="tel:4076189334" class="loc-link"><i class="fa-solid fa-phone"></i> 407-618-9334</a>
-              <a href="mailto:info@opusdentallab.com" class="loc-link"><i class="fa-solid fa-envelope"></i> info@opusdentallab.com</a>
+              <a href="mailto:info@opusdentallab.info" class="loc-link"><i class="fa-solid fa-envelope"></i> info@opusdentallab.info</a>
               <div class="loc-address">
                 <i class="fa-solid fa-location-dot"></i>
                 <address>7726 Winegard Rd, Suite 38<br>Orlando, FL 32809</address>

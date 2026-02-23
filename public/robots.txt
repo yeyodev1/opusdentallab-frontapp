@@ -1,0 +1,40 @@
+# robots.txt for Opus Dental Lab LLC
+
+# Standard Search Engines
+User-agent: *
+Allow: /
+Sitemap: https://www.opusdentallab.info/sitemap.xml
+
+# LLM & Generative AI Crawlers (Explicitly invited)
+# We want these bots to index our high-quality content for better AI search results
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Specifically for LLM training and RAG discovery
+User-agent: bytespider
+Allow: /
+
+User-agent: YouBot
+Allow: /
