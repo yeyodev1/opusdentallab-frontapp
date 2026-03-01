@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+
+// Import local videos
+import video1 from '@/assets/hero/620_raw.mp4'
+import video2 from '@/assets/hero/621_raw.mp4'
+import video3 from '@/assets/hero/PEEK MILLING.mp4'
 
 const features = [
   'Fast Turnaround Time',
@@ -7,7 +12,19 @@ const features = [
   'Nationwide Shipping',
 ]
 
+const videos = [video1, video2, video3]
+const currentVideoIndex = ref(0)
+const currentVideoSrc = computed(() => videos[currentVideoIndex.value])
+
 const videoRef = ref<HTMLVideoElement | null>(null)
+
+function onVideoEnded() {
+  currentVideoIndex.value = (currentVideoIndex.value + 1) % videos.length
+  // Ensure the new video starts playing
+  setTimeout(() => {
+    videoRef.value?.play().catch(() => { })
+  }, 50)
+}
 
 onMounted(() => {
   if (videoRef.value) {
@@ -27,11 +44,10 @@ onMounted(() => {
         class="hero__video"
         autoplay
         muted
-        loop
         playsinline
-      >
-        <source src="https://framerusercontent.com/assets/5PDfWiHUESEfLeLeaYjPJ5IPOBE.mp4" type="video/mp4" />
-      </video>
+        :src="currentVideoSrc"
+        @ended="onVideoEnded"
+      ></video>
       <div class="hero__video-overlay"></div>
     </div>
 

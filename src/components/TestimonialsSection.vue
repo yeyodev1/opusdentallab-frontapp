@@ -11,7 +11,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote: "This is our favorite lab. It is clear that they love their work, and our patients couldn't be happier with the results. Their commitment to excellence is evident in every case.",
-    name: 'Fatima Butt',
+    name: 'Dr. Fatima Butt',
     practice: 'Z FAMILY AND COSMETIC DENTISTRY',
     image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771804384/WhatsApp_Image_Feb_22_2026_ghbxoh.jpg'
   },
@@ -20,6 +20,18 @@ const testimonials: Testimonial[] = [
     name: 'Dr. Saad',
     practice: 'Z FAMILY AND COSMETIC DENTISTRY',
     image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771804394/WhatsApp_Image_yarmxw.jpg'
+  },
+  {
+    quote: "Finding a laboratory that combines high-tech precision with a deep understanding of dental aesthetics has been a game-changer for my clinic in Ecuador. Their attention to detail and consistent results allow me to provide my patients with the quality they deserve. It’s more than a service; they are a true partner in my daily practice.",
+    name: 'Dr. Ronald',
+    practice: 'Dental Advanced',
+    image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1772407932/WhatsApp_Image_Feb_28_2026_1_khhqrs.jpg'
+  },
+  {
+    quote: "The precision, aesthetics, and attention to detail they deliver are simply outstanding. Their dedication to quality helps us create beautiful, confident smiles for all our patients.",
+    name: 'Dr. Moises',
+    practice: 'Dental Escultores de Sonrisas',
+    image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1772407911/WhatsApp_Image_Feb_28_2026_emhbs5.jpg'
   }
 ]
 
