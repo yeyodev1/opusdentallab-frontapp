@@ -34,6 +34,5 @@ import FooterSection from '@/components/FooterSection.vue'
 .opus-site {
   min-height: 100vh;
   background: $primary-dark;
-  overflow-x: hidden;
 }
 </style>

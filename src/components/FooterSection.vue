@@ -33,7 +33,7 @@ const socialLinks = [
           <p>Ready to smile</p>
           <div class="footer__address">
             <i class="fa-solid fa-location-dot"></i>
-            <span>7726 Winegard Rd, Suite 38, Orlando, FL 32809</span>
+            <span>7726 Winegard Rd, Suite 38<br/>Orlando, Florida, USA 32809</span>
           </div>
           <div class="footer__social">
             <a v-for="s in socialLinks" :key="s.icon" :href="s.href" target="_blank" aria-label="Social">

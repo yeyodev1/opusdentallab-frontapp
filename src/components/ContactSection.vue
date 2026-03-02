@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+import { leadService } from '@/services/lead.service'
 
 const contactFeatures = [
   {
@@ -18,12 +19,59 @@ const whatsappLink = 'https://wa.me/14076189334'
 
 // Form State
 const form = reactive({
-  name: '',
-  practice: '',
+  firstName: '',
+  lastName: '',
+  businessName: '',
   email: '',
+  phoneCode: '+1',
   phone: '',
   message: ''
 })
+
+const isSubmitting = ref(false)
+const submitSuccess = ref(false)
+const submitError = ref(false)
+
+async function handleSubmit() {
+  if (isSubmitting.value) return;
+
+  isSubmitting.value = true;
+  submitSuccess.value = false;
+  submitError.value = false;
+
+  try {
+    await leadService.submitLead({
+      firstName: form.firstName,
+      lastName: form.lastName,
+      businessName: form.businessName,
+      email: form.email,
+      phoneCode: form.phoneCode,
+      phone: form.phone,
+      message: form.message
+    })
+
+    // Clear form on success
+    form.firstName = ''
+    form.lastName = ''
+    form.businessName = ''
+    form.email = ''
+    form.phone = ''
+    form.phoneCode = '+1'
+    form.message = ''
+
+    submitSuccess.value = true
+
+    // Hide success message after 5 seconds
+    setTimeout(() => {
+      submitSuccess.value = false
+    }, 5000)
+
+  } catch (error) {
+    submitError.value = true
+  } finally {
+    isSubmitting.value = false
+  }
+}
 
 const formFeatures = [
   'Submit & Track cases online 24/7',
@@ -123,25 +171,46 @@ const formFeatures = [
         <!-- Form Left -->
         <div class="form-section__card">
           <h3>Have a case to<br>discuss?</h3>
-          <form class="form-section__form" @submit.prevent>
-            <div class="form-section__group">
-              <input type="text" id="name" v-model="form.name" required placeholder="Name" />
+          <form class="form-section__form" @submit.prevent="handleSubmit">
+            <div class="form-section__group form-section__row">
+              <input type="text" id="firstName" v-model="form.firstName" required placeholder="First Name" />
+              <input type="text" id="lastName" v-model="form.lastName" required placeholder="Last Name" />
             </div>
             <div class="form-section__group">
-              <input type="text" id="practice" v-model="form.practice" required placeholder="Practice" />
+              <input type="text" id="businessName" v-model="form.businessName" required placeholder="Business Name" />
             </div>
             <div class="form-section__group">
-              <input type="email" id="email" v-model="form.email" required placeholder="Email" />
+              <input type="email" id="email" v-model="form.email" required placeholder="Email Address" />
             </div>
-            <div class="form-section__group">
+            <div class="form-section__group form-section__phone-group">
+              <select v-model="form.phoneCode" id="phoneCode" class="phone-select">
+                <option value="+1">US (+1)</option>
+                <option value="+593">EC (+593)</option>
+                <option value="+52">MX (+52)</option>
+                <option value="+57">CO (+57)</option>
+                <option value="+34">ES (+34)</option>
+                <option value="+51">PE (+51)</option>
+                <option value="+54">AR (+54)</option>
+              </select>
               <input type="tel" id="phone" v-model="form.phone" required placeholder="Phone Number" />
             </div>
             <div class="form-section__group">
               <textarea id="message" v-model="form.message" rows="3" placeholder="How can we support your practice?"></textarea>
             </div>
-            <button type="submit" class="form-section__submit">
-              Connect with Our Team
-              <i class="fa-solid fa-arrow-right"></i>
+            
+            <div v-if="submitSuccess" class="form-section__status success">
+              <i class="fa-solid fa-circle-check"></i>
+              Your request has been received. Our team will contact you shortly!
+            </div>
+            
+            <div v-if="submitError" class="form-section__status error">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              There was an error sending your request. Please try again or contact us via phone or WhatsApp.
+            </div>
+
+            <button type="submit" class="form-section__submit" :disabled="isSubmitting">
+              <span v-if="isSubmitting" class="spinner"></span>
+              <span v-else>Connect with Our Team <i class="fa-solid fa-arrow-right"></i></span>
             </button>
           </form>
         </div>
@@ -522,6 +591,50 @@ const formFeatures = [
     }
   }
 
+  &__row {
+    display: flex;
+    gap: 1.5rem;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+
+  &__phone-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .phone-select {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba($white, 0.15);
+      color: $text-light;
+      padding: 1rem 0;
+      font-size: 0.95rem;
+      width: 110px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: $primary;
+      }
+
+      option {
+        background: $surface-dark;
+        color: $text-light;
+        padding: 0.5rem;
+      }
+    }
+
+    input {
+      flex: 1;
+    }
+  }
+
   &__submit {
     display: flex;
     align-items: center;
@@ -534,17 +647,77 @@ const formFeatures = [
     border-radius: 99px;
     font-size: 0.95rem;
     font-weight: 600;
-    margin-top: 2rem;
+    margin-top: 1rem;
     cursor: pointer;
-    transition: transform 0.3s, background 0.3s;
+    transition: transform 0.3s, background 0.3s, opacity 0.3s;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: $text-secondary;
       transform: translateY(-2px);
     }
 
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
     i {
       font-size: 1.1rem;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba($primary-dark, 0.3);
+      border-radius: 50%;
+      border-top-color: $primary-dark;
+      animation: spin 1s ease-in-out infinite;
+    }
+  }
+
+  &__status {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    animation: fadeIn 0.3s ease-out;
+
+    i {
+      font-size: 1.2rem;
+    }
+
+    &.success {
+      background: rgba(#25D366, 0.1);
+      color: #72f7a4;
+      border: 1px solid rgba(#25D366, 0.3);
+    }
+
+    &.error {
+      background: rgba(#ef4444, 0.1);
+      color: #fca5a5;
+      border: 1px solid rgba(#ef4444, 0.3);
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 

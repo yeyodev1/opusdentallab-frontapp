@@ -56,219 +56,137 @@ const products: Product[] = [
 ]
 
 const activeIndex = ref(0)
-const sectionRef = ref<HTMLElement | null>(null)
-const isLocked = ref(false)
-const isAnimating = ref(false)
-
-// Cooldown prevents immediate re-lock after exiting
-let cooldownTimer: ReturnType<typeof setTimeout> | null = null
-let lastScrollY = 0
+const wrapperRef = ref<HTMLElement | null>(null)
 
 const currentProduct = computed(() => products[activeIndex.value])
 const progress = computed(() =>
   `${String(activeIndex.value + 1).padStart(2, '0')} / ${String(products.length).padStart(2, '0')}`
 )
 
-function lockBody() {
-  if (cooldownTimer) return
-  document.body.style.overflow = 'hidden'
-  isLocked.value = true
-}
+function handleScroll() {
+  if (!wrapperRef.value) return
 
-function unlockBody() {
-  document.body.style.overflow = ''
-  isLocked.value = false
+  const rect = wrapperRef.value.getBoundingClientRect()
 
-  // Prevent immediate re-lock while the page is still scrolling away
-  cooldownTimer = setTimeout(() => { cooldownTimer = null }, 800)
-}
+  // Calculate how far down we've scrolled inside the wrapper
+  // The distance between products is roughly 80vh
+  const scrollStep = window.innerHeight * 0.8
 
-function goToProduct(direction: number) {
-  if (isAnimating.value) return
-
-  const next = activeIndex.value + direction
-
-  // Boundary: last product → scrolling down → exit
-  if (next >= products.length) {
-    unlockBody()
+  // If we haven't reached the wrapper yet, stay on product 0
+  if (rect.top > 0) {
+    if (activeIndex.value !== 0) activeIndex.value = 0
     return
   }
 
-  // Boundary: first product → scrolling up → exit
-  if (next < 0) {
-    unlockBody()
-    return
-  }
+  const scrolledPx = -rect.top
+  let index = Math.floor(scrolledPx / scrollStep)
 
-  isAnimating.value = true
-  activeIndex.value = next
-  setTimeout(() => { isAnimating.value = false }, 500)
-}
+  // Bound the index
+  index = Math.max(0, Math.min(products.length - 1, index))
 
-// ─── Wheel: prevent ALL scroll while locked ───
-function handleWheel(e: WheelEvent) {
-  if (!isLocked.value) return
-  e.preventDefault()
-  e.stopPropagation()
-  goToProduct(e.deltaY > 0 ? 1 : -1)
-}
-
-// ─── Touch support ───
-let touchStartY = 0
-
-function handleTouchStart(e: TouchEvent) {
-  touchStartY = e.touches[0]?.clientY ?? 0
-}
-
-function handleTouchMove(e: TouchEvent) {
-  if (isLocked.value) e.preventDefault()
-}
-
-function handleTouchEnd(e: TouchEvent) {
-  if (!isLocked.value) return
-  const touchEndY = e.changedTouches[0]?.clientY ?? 0
-  const diff = touchStartY - touchEndY
-  if (Math.abs(diff) < 30) return
-  goToProduct(diff > 0 ? 1 : -1)
-}
-
-// ─── Keyboard ───
-function handleKeydown(e: KeyboardEvent) {
-  if (!isLocked.value) return
-  if (e.key === 'ArrowDown' || e.key === ' ') {
-    e.preventDefault()
-    goToProduct(1)
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault()
-    goToProduct(-1)
+  if (index !== activeIndex.value) {
+    activeIndex.value = index
   }
 }
 
-// ─── Track scroll direction globally ───
-function trackScroll() {
-  lastScrollY = window.scrollY
-}
+function goToIndex(i: number) {
+  if (!wrapperRef.value) return
+  const scrollStep = window.innerHeight * 0.8
 
-// ─── IntersectionObserver: reliably detects section entering viewport ───
-let observer: IntersectionObserver | null = null
+  // Find absolute top of the wrapper
+  const rect = wrapperRef.value.getBoundingClientRect()
+  const wrapperTop = window.scrollY + rect.top
 
-function setupObserver() {
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting || isLocked.value || cooldownTimer || (window as any).__navigating) return
+  // Scroll slightly past the threshold to firmly land on the index
+  const targetScrollY = wrapperTop + (i * scrollStep) + 20
 
-        // Determine scroll direction at the moment of intersection
-        const scrollingDown = window.scrollY >= lastScrollY
-
-        if (scrollingDown) {
-          // Entering section from above → start at first product
-          activeIndex.value = 0
-          sectionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        } else {
-          // Entering section from below → start at last product
-          activeIndex.value = products.length - 1
-          sectionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-        }
-
-        setTimeout(() => lockBody(), 450)
-      })
-    },
-    { threshold: [0.5] }
-  )
-
-  if (sectionRef.value) observer.observe(sectionRef.value)
+  window.scrollTo({ top: targetScrollY, behavior: 'smooth' })
 }
 
 onMounted(() => {
-  lastScrollY = window.scrollY
-  setupObserver()
-  window.addEventListener('scroll', trackScroll, { passive: true })
-  window.addEventListener('wheel', handleWheel, { passive: false })
-  window.addEventListener('touchstart', handleTouchStart, { passive: true })
-  window.addEventListener('touchmove', handleTouchMove, { passive: false })
-  window.addEventListener('touchend', handleTouchEnd, { passive: true })
-  window.addEventListener('keydown', handleKeydown)
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  // Initial calculation on mount
+  handleScroll()
 })
 
 onUnmounted(() => {
-  observer?.disconnect()
-  unlockBody()
-  if (cooldownTimer) clearTimeout(cooldownTimer)
-  window.removeEventListener('scroll', trackScroll)
-  window.removeEventListener('wheel', handleWheel)
-  window.removeEventListener('touchstart', handleTouchStart)
-  window.removeEventListener('touchmove', handleTouchMove)
-  window.removeEventListener('touchend', handleTouchEnd)
-  window.removeEventListener('keydown', handleKeydown)
+  window.removeEventListener('scroll', handleScroll)
 })
 </script>
 
 <template>
-  <section id="showcase" ref="sectionRef" class="showcase">
-    <!-- Blurred background glow -->
-    <div class="showcase__bg">
-      <img
-        v-for="(product, i) in products"
-        :key="product.name + '-bg'"
-        :src="product.image"
-        alt=""
-        class="showcase__bg-img"
-        :class="{ 'showcase__bg-img--active': activeIndex === i }"
-      />
-    </div>
-
-    <div class="showcase__content">
-      <!-- Counter -->
-      <div class="showcase__counter">{{ progress }}</div>
-
-      <!-- Centered product display -->
-      <div class="showcase__product">
-        <div class="showcase__image-area">
-          <img
-            v-for="(product, i) in products"
-            :key="product.name"
-            :src="product.image"
-            :alt="product.name"
-            class="showcase__image"
-            :class="{ 'showcase__image--active': activeIndex === i }"
-          />
-        </div>
-
-        <div class="showcase__info">
-          <Transition name="slide-up" mode="out-in">
-            <div v-if="currentProduct" :key="currentProduct.name" class="showcase__info-inner">
-              <h2>{{ currentProduct.name }}</h2>
-              <p>{{ currentProduct.description }}</p>
-            </div>
-          </Transition>
-        </div>
-      </div>
-
-      <!-- Dot navigation --> 
-      <div class="showcase__dots">
-        <button
-          v-for="(_, i) in products"
-          :key="i"
-          class="showcase__dot"
-          :class="{ 'showcase__dot--active': activeIndex === i }"
-          @click="activeIndex = i"
-          :aria-label="`Product ${i + 1}`"
+  <div class="showcase-wrapper" ref="wrapperRef" :style="{ height: `calc(100vh + ${products.length - 1} * 80vh)` }">
+    <section id="showcase" class="showcase">
+      <!-- Blurred background glow -->
+      <div class="showcase__bg">
+        <img
+          v-for="(product, i) in products"
+          :key="product.name + '-bg'"
+          :src="product.image"
+          alt=""
+          class="showcase__bg-img"
+          :class="{ 'showcase__bg-img--active': activeIndex === i }"
         />
       </div>
 
-      <!-- Scroll hint — flush at the very bottom -->
-      <div class="showcase__hint">
-        <span>Scroll to explore</span>
-        <i class="fa-solid fa-chevron-down" />
+      <div class="showcase__content">
+        <!-- Counter -->
+        <div class="showcase__counter">{{ progress }}</div>
+
+        <!-- Centered product display -->
+        <div class="showcase__product">
+          <div class="showcase__image-area">
+            <img
+              v-for="(product, i) in products"
+              :key="product.name"
+              :src="product.image"
+              :alt="product.name"
+              class="showcase__image"
+              :class="{ 'showcase__image--active': activeIndex === i }"
+            />
+          </div>
+
+          <div class="showcase__info">
+            <Transition name="slide-up" mode="out-in">
+              <div v-if="currentProduct" :key="currentProduct.name" class="showcase__info-inner">
+                <h2>{{ currentProduct.name }}</h2>
+                <p>{{ currentProduct.description }}</p>
+              </div>
+            </Transition>
+          </div>
+        </div>
+
+        <!-- Dot navigation --> 
+        <div class="showcase__dots">
+          <button
+            v-for="(_, i) in products"
+            :key="i"
+            class="showcase__dot"
+            :class="{ 'showcase__dot--active': activeIndex === i }"
+            @click="goToIndex(i)"
+            :aria-label="`Product ${i + 1}`"
+          />
+        </div>
+
+        <!-- Scroll hint — flush at the very bottom -->
+        <div class="showcase__hint">
+          <span>Scroll to explore</span>
+          <i class="fa-solid fa-chevron-down" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.showcase {
+.showcase-wrapper {
   position: relative;
+  width: 100%;
+}
+
+.showcase {
+  position: sticky;
+  top: 0;
   height: 100vh;
   overflow: hidden;
   background: $primary-dark;
