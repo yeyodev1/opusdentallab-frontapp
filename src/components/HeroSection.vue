@@ -61,7 +61,6 @@ onMounted(() => {
     <div class="hero__content">
       <p class="hero__subtitle">FASTEST GROWING</p>
       <h1 class="hero__title hero__title--client">
-        <span class="visually-hidden">The Premier Dental Lab in Florida, USA. </span>
         First dental lab designed<br />
         and led by a dentist.
       </h1>
