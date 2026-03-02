@@ -114,6 +114,7 @@ class StoryblokService {
       const response = await this.client.get('cdn/stories', {
         version: 'published',
         starts_with: 'catalog/',
+        per_page: 100 // Storyblok default is 25, increasing to max
       });
       return response.data.stories;
     } catch (error) {
