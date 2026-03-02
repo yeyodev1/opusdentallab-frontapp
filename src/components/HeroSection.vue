@@ -96,17 +96,18 @@ onMounted(() => {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.7) contrast(1.1);
+    filter: brightness(0.4) contrast(1.05); // Strong reduction in brightness to make it opaque
   }
 
   &__video-overlay {
     position: absolute;
     inset: 0;
+    // Solid dark overlay mixed with a gradient vignette effect
     background: linear-gradient(to bottom,
-        rgba(0, 0, 0, 0.5) 0%,
-        transparent 20%,
-        transparent 80%,
-        rgba(0, 0, 0, 0.6) 100%);
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.5) 40%,
+        rgba(0, 0, 0, 0.5) 60%,
+        rgba(0, 0, 0, 0.8) 100%);
   }
 
   // ─── Feature List (Top Right) ───
