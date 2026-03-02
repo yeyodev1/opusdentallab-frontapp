@@ -17,6 +17,17 @@ export default defineConfig({
     },
     build: {
         target: 'esnext',
+        chunkSizeWarningLimit: 9000,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    // Vendor chunk for Vue and Router mapping
+                    'vendor': ['vue', 'vue-router'],
+                    // Geographic data should be chunked separately given its size
+                    'geo-data': ['country-state-city']
+                }
+            }
+        }
     },
     optimizeDeps: {
         include: ['country-state-city']
