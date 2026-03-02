@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { leadService } from '@/services/lead.service'
+import { State, City } from 'country-state-city'
 
 const contactFeatures = [
   {
@@ -17,6 +18,9 @@ const contactFeatures = [
 const phoneNumber = '+1 (407) 618-9334'
 const whatsappLink = 'https://wa.me/14076189334'
 
+
+const usStates = State.getStatesOfCountry('US')
+
 // Form State
 const form = reactive({
   firstName: '',
@@ -25,7 +29,14 @@ const form = reactive({
   email: '',
   phoneCode: '+1',
   phone: '',
+  city: '',
+  state: '',
   message: ''
+})
+
+const availableCities = computed(() => {
+  if (!form.state) return []
+  return City.getCitiesOfState('US', form.state)
 })
 
 const isSubmitting = ref(false)
@@ -47,6 +58,8 @@ async function handleSubmit() {
       email: form.email,
       phoneCode: form.phoneCode,
       phone: form.phone,
+      city: form.city,
+      state: form.state,
       message: form.message
     })
 
@@ -57,6 +70,8 @@ async function handleSubmit() {
     form.email = ''
     form.phone = ''
     form.phoneCode = '+1'
+    form.city = ''
+    form.state = ''
     form.message = ''
 
     submitSuccess.value = true
@@ -179,6 +194,18 @@ const formFeatures = [
             <div class="form-section__group">
               <input type="text" id="businessName" v-model="form.businessName" required placeholder="Business Name" />
             </div>
+            
+            <div class="form-section__group form-section__row">
+              <select v-model="form.state" id="state" required style="flex: 1;" class="state-select" :class="{ 'placeholder-selected': form.state === '' }" @change="form.city = ''">
+                <option value="" disabled>State</option>
+                <option v-for="st in usStates" :key="st.isoCode" :value="st.isoCode">{{ st.name }} ({{ st.isoCode }})</option>
+              </select>
+              <select v-model="form.city" id="city" required style="flex: 1;" class="state-select" :class="{ 'placeholder-selected': form.city === '' }" :disabled="!form.state">
+                <option value="" disabled>City{{ !form.state ? ' (Select State)' : '' }}</option>
+                <option v-for="city in availableCities" :key="city.name" :value="city.name">{{ city.name }}</option>
+              </select>
+            </div>
+
             <div class="form-section__group">
               <input type="email" id="email" v-model="form.email" required placeholder="Email Address" />
             </div>
@@ -563,7 +590,8 @@ const formFeatures = [
   &__group {
 
     input,
-    textarea {
+    textarea,
+    select.state-select {
       width: 100%;
       background: transparent;
       border: none;
@@ -581,6 +609,19 @@ const formFeatures = [
       &:focus {
         outline: none;
         border-color: $primary;
+      }
+
+      option {
+        background: $surface-dark;
+        color: $text-light;
+      }
+    }
+
+    select.state-select {
+      cursor: pointer;
+
+      &.placeholder-selected {
+        color: rgba($text-muted, 0.7);
       }
     }
 

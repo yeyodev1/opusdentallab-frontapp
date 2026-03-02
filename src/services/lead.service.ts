@@ -11,6 +11,8 @@ export interface LeadFormPayload {
   email: string
   phoneCode: string
   phone: string
+  city: string
+  state: string
   message: string
 }
 
@@ -32,6 +34,8 @@ export const leadService = {
         phone: fullPhoneNumber,
 
         companyName: data.businessName,     // GHL standard company field
+        city: data.city,
+        state: data.state,
         message: data.message,
 
         contactSource: 'Website Contact Form', // For opportunity source tracking
