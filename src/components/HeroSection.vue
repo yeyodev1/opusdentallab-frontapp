@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 
-// Import local videos
-import video1 from '@/assets/hero/620_raw.mp4'
-import video2 from '@/assets/hero/621_raw.mp4'
-import video3 from '@/assets/hero/PEEK MILLING.mp4'
+const video1 = 'https://res.cloudinary.com/dpimsaaa4/video/upload/v1772413700/620_raw_owsohd.mp4'
+const video2 = 'https://res.cloudinary.com/dpimsaaa4/video/upload/v1772413702/621_raw_kesj5s.mp4'
+const video3 = 'https://res.cloudinary.com/dpimsaaa4/video/upload/v1772413700/PEEK_MILLING_o6elwl.mp4'
 
 const features = [
   'Fast Turnaround Time',
