@@ -6,6 +6,7 @@ interface Testimonial {
   name: string
   practice: string
   image: string
+  objectPosition?: string
 }
 
 const testimonials: Testimonial[] = [
@@ -31,7 +32,8 @@ const testimonials: Testimonial[] = [
     quote: "The precision, aesthetics, and attention to detail they deliver are simply outstanding. Their dedication to quality helps us create beautiful, confident smiles for all our patients.",
     name: 'Dr. Moises',
     practice: 'Dental Escultores de Sonrisas',
-    image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1772407911/WhatsApp_Image_Feb_28_2026_emhbs5.jpg'
+    image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1772407911/WhatsApp_Image_Feb_28_2026_emhbs5.jpg',
+    objectPosition: 'top'
   }
 ]
 
@@ -108,7 +110,7 @@ onUnmounted(() => {
               @click="handleManualEntry(i)"
               :aria-label="`View testimonial from ${t.name}`"
             >
-              <img :src="t.image" :alt="t.name" class="testimonials__avatar-img" />
+              <img :src="t.image" :alt="t.name" class="testimonials__avatar-img" :style="{ objectPosition: t.objectPosition || 'center' }" />
               <div class="testimonials__avatar-overlay"></div>
             </button>
           </div>
