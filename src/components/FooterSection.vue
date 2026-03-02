@@ -8,7 +8,7 @@ const productLinks = [
 
 const rxLinks = [
   { label: "Dr's Digital Scan Instructions", href: 'https://drive.google.com/file/d/1pNuZY2g0qaOor931vNi2jY8Jegqc4Fwf/view?usp=sharing' },
-  { label: "Doctor Digital Scan Instructions", href: 'https://drive.google.com/file/d/1lqp2sdszi-yy18Qit_1ZDAQTNaylXrvw/view?usp=sharing' },
+  // { label: "Doctor Digital Scan Instructions", href: 'https://drive.google.com/file/d/1lqp2sdszi-yy18Qit_1ZDAQTNaylXrvw/view?usp=sharing' },
   { label: "Fixed RX", href: 'https://drive.google.com/file/d/1ZmNF3upDEIQN9DMOV4ud2yLSvADgvrMV/view?usp=sharing' },
   { label: "Implant Rx", href: 'https://drive.google.com/file/d/1aqdUVZHN1SRyB7d01QzMuDYiwMHozyRm/view?usp=sharing' },
   { label: "Removable Rx", href: 'https://drive.google.com/file/d/113jxjkCaCNIj9RaOr7vtKxfs0OrEq3lA/view?usp=sharing' },
