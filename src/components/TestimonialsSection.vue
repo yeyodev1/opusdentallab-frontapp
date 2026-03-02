@@ -13,7 +13,7 @@ const testimonials: Testimonial[] = [
     quote: "This is our favorite lab. It is clear that they love their work, and our patients couldn't be happier with the results. Their commitment to excellence is evident in every case.",
     name: 'Dr. Fatima Butt',
     practice: 'Z FAMILY AND COSMETIC DENTISTRY',
-    image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1771804384/WhatsApp_Image_Feb_22_2026_ghbxoh.jpg'
+    image: 'https://res.cloudinary.com/dpimsaaa4/image/upload/v1772415538/WhatsApp_Image_Feb_22_2026_1_esspnc.jpg'
   },
   {
     quote: "This is our laboratory of choice. Their exceptional craftsmanship and passion for their work translate into superior clinical outcomes that both our team and our patients truly appreciate.",
