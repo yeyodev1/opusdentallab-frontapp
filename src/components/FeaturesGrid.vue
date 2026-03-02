@@ -49,7 +49,7 @@
           <div class="features__scanner-ui">
             <div class="features__scanner-device">
               <div class="features__scanner-bar"></div>
-              <span class="features__scanner-label">iScan32</span>
+              <!-- <span class="features__scanner-label">iScan32</span> -->
             </div>
             <div class="features__scanner-progress">
               <span>Scanning...</span>
