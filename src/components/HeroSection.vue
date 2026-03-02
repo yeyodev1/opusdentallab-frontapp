@@ -61,8 +61,9 @@ onMounted(() => {
     <div class="hero__content">
       <p class="hero__subtitle">FASTEST GROWING</p>
       <h1 class="hero__title hero__title--client">
-        The Premier Dental Lab<br />
-        in Florida, USA
+        <span class="visually-hidden">The Premier Dental Lab in Florida, USA. </span>
+        First dental lab designed<br />
+        and led by a dentist.
       </h1>
     </div>
 
@@ -171,6 +172,19 @@ onMounted(() => {
       line-height: 1.1; // Better spacing for sentence-case text
       max-width: 800px;
     }
+  }
+
+  // ─── Utility ───
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   // ─── CTA Wrapper (Bottom Right) ───
