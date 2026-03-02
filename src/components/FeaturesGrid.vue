@@ -423,20 +423,37 @@
 
   .features__card--credit {
     grid-column: 1 / 3;
-    grid-row: auto;
+    grid-row: 1;
   }
 
-  .features__card--scanner {
-    grid-column: auto;
-    grid-row: auto;
+  .features__card--cosmetic {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .features__card--precision {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .features__card--cases {
-    grid-row: auto;
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .features__card--scanner {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .features__card--allonx-title {
+    grid-column: 1 / 3;
+    grid-row: 4;
   }
 
   .features__card--allonx-img {
-    grid-row: auto;
+    grid-column: 1 / 3;
+    grid-row: 5;
   }
 }
 
