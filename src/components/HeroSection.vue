@@ -61,8 +61,8 @@ onMounted(() => {
     <div class="hero__content">
       <p class="hero__subtitle">FASTEST GROWING</p>
       <h1 class="hero__title hero__title--client">
-        First dental lab designed<br />
-        and led by a dentist.
+        First Dental Lab Designed<br />
+        and Led by a Dentist.
       </h1>
     </div>
 
